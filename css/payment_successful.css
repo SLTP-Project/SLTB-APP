@@ -101,4 +101,8 @@
 
 
 /* Prevent overlap with footer */
-main { margin-bottom:60px; }
+main { margin-bottom:60px; 
+margin-bottom: 35%;
+}
+
+

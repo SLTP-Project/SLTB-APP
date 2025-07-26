@@ -3,6 +3,7 @@
 @import url('buslist.css');
 
 /* HEADER: only top bar */
+
 .pickup-header {
   /* height set inline or here; main point is NOT 100vh */
   height: 56px;
@@ -102,10 +103,12 @@ main {
 }
 .summary-label {
   font-weight: 500;
+  
   color: #102542;
 }
 .summary-value {
   font-weight: 600;
+  padding-left: 5%;
   color: #FF6B00;
 }
 
@@ -139,8 +142,10 @@ main {
 /* Action buttons container */
 .action-buttons {
   display: flex;
+  flex:1;
   justify-content: space-between;
   gap: 16px;
+  padding-bottom: 10%;
   margin: 16px;
 }
 .btn-primary, .btn-secondary {
@@ -178,14 +183,36 @@ main {
   padding-top: 8px;
 } */
 
-/* Footer positioning */
-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #ffffff;
-  z-index: 2;
-}
+
 /* Remove extra main margin if buslist.css sets one */
 main { margin-bottom: 0; }
+
+
+/* Fix footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  z-index: 1000;
+}
+
+/* Make main content scrollable between header & footer */
+main {
+  position: fixed;
+  top: 70px; /* header height */
+  bottom: 80px; /* footer height */
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  padding-bottom: 20px; /* extra space */
+  background: #f9f9f9; /* optional */
+}
+
+/* Adjust notice and boxes spacing */
+.box,
+.notice-box,
+.action-buttons {
+  margin-bottom: 16px;
+}
