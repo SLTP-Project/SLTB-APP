@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Firestore Test</title></head>
+<body>
+  <h1>Firestore Test</h1>
+  <button id="test-btn">Test Read</button>
+  <pre id="output"></pre>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    // Copy your exact config here:
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyCL_pqvzUJMNlWpankZHnJzOEQqR1IShZM",
+    authDomain: "sltb-e-seat.firebaseapp.com",
+    projectId: "sltb-e-seat",
+    storageBucket: "sltb-e-seat.firebasestorage.app",
+    messagingSenderId: "598552204337",
+    appId: "1:598552204337:web:28ec5ab113ecce5cf0b110",
+    measurementId: "G-XQ2NDGQ4PM"
+};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const out = document.getElementById("output");
+    document.getElementById("test-btn").addEventListener("click", async () => {
+      out.textContent = "Reading test doc...";
+      try {
+        const ref = doc(db, "testCollection", "testDoc");
+        // Try writing then reading:
+        await setDoc(ref, { hello: "world", ts: new Date().toISOString() });
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          out.textContent = JSON.stringify(snap.data(), null, 2);
+        } else {
+          out.textContent = "No doc found";
+        }
+      } catch (err) {
+        out.textContent = "Error: " + err;
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

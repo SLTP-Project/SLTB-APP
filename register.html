@@ -1,0 +1,66 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SLTB e-seat – Register</title>
+  <link rel="stylesheet" href="css/auth.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="auth-card">
+    <img src="images/logo.png" alt="SLTB logo" class="logo"/>
+    <h1>Create Account</h1>
+
+    <div class="input-group">
+      <label for="reg-name">Full Name</label>
+      <input id="reg-name" type="text" placeholder="e.g. Sunil Perera"/>
+      <div id="err-name" class="input-error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="reg-phone">Phone Number</label>
+      <input id="reg-phone" type="tel" placeholder="+94 71 123 4567"/>
+      <div id="err-phone" class="input-error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="reg-email">Email Address</label>
+      <input id="reg-email" type="email" placeholder="you@example.com"/>
+      <div id="err-email" class="input-error"></div>
+    </div>
+
+    <div class="input-group" style="position:relative;">
+      <label for="reg-password">Password</label>
+      <input id="reg-password" type="password" placeholder="••••••••"/>
+        <span class="material-icons toggle-eye1" data-target="reg-password">visibility</span>
+      <div id="err-password" class="input-error"></div>
+    </div>
+
+    <div class="input-group" style="position:relative;">
+      <label for="reg-password2">Confirm Password</label>
+      <input id="reg-password2" type="password" placeholder="••••••••"/>
+       <span class="material-icons toggle-eye1" data-target="reg-password2">visibility</span>
+      <div id="err-password2" class="input-error"></div>
+    </div>
+
+    <button id="register-btn">Create Account</button>
+
+    <p class="switch">
+      Already have an account? <a href="index.html">Login here</a>
+    </p>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Registration Successful!</h2>
+      <p>You can now log in with your credentials.</p>
+      <button id="to-login-btn">Back to Login</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/register.js"></script>
+</body>
+</html>

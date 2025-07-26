@@ -1,0 +1,46 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SLTB e-seat – Login</title>
+  <link rel="stylesheet" href="css/auth.css"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+  <div class="auth-card">
+    <img src="images/logo.png" alt="SLTB logo" class="logo"/>
+    <h1>Welcome Back</h1>
+
+    <div id="error-msg" class="input-error"></div>
+
+    <div class="input-group">
+      <label for="login-email">Email Address</label>
+      <input type="email" id="login-email" placeholder="you@example.com"/>
+    </div>
+    <div class="input-group" style="position:relative;">
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" placeholder="••••••••"/>
+        <span class="material-icons toggle-eye" data-target="login-password">visibility</span>
+    </div>
+
+    <button id="login-btn">Login</button>
+
+    <p class="switch">
+      Don’t have an account? <a href="register.html">Register here</a>
+    </p>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="login-success-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h2>Login Successful!</h2>
+      <p>Redirecting to home…</p>
+    </div>
+  </div>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

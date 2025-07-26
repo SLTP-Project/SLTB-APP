@@ -1,0 +1,118 @@
+<!-- payment_successful.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Payment Successful</title>
+  <link rel="stylesheet" href="css/buslist.css" />
+  <link rel="stylesheet" href="css/payment_successful.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="#">Journey</a></li>
+      <li class="nav-item"><a href="#">Alert</a></li>
+      <li class="nav-item"><a href="#">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+    <div class="header-content">
+      <!-- No back button here per requirement -->
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+      </div>
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="box success-box">
+      <!-- Green check icon -->
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+             viewBox="0 0 24 24" fill="none" stroke="#28A745"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5-8.66"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+
+      <!-- Thank you text -->
+      <div class="thank-you">
+        <h3>Thank you</h3>
+        <h2>Your booking is successful.</h2>
+      </div>
+
+      <!-- Booking details -->
+      <div class="details-table">
+        <!-- Seat no -->
+        <div class="row"><span class="label">Seat no</span><span id="ps-seat" class="value"></span></div>
+        <!-- Deport: per requirement, show the TO location -->
+        <div class="row"><span class="label">Deport</span><span id="ps-deport" class="value"></span></div>
+        <!-- Route: from – to -->
+        <div class="row"><span class="label">Route</span><span id="ps-route" class="value"></span></div>
+        <!-- Travel date -->
+        <div class="row"><span class="label">Travel date</span><span id="ps-date" class="value"></span></div>
+        <!-- Time: departureTime -->
+        <div class="row"><span class="label">Time</span><span id="ps-time" class="value"></span></div>
+        <!-- Mode of payment -->
+        <div class="row"><span class="label">Mode of payment</span><span id="ps-payment-method" class="value"></span></div>
+        <!-- V-Code: to be generated & displayed -->
+        <div class="row"><span class="label">V-Code</span><span id="ps-vcode" class="value"></span></div>
+      </div>
+
+      <!-- Primary & secondary buttons -->
+      <button id="see-journey-btn" class="see-journey-btn">Set location alarm</button>
+      <button id="skip-home-btn" class="skip-btn">Skip and go to home</button>
+      <button id="download-image-btn" class="download-btn">Download Recipt</button>
+    </div>
+
+    <!-- Important Notice -->
+    <div class="notice-box">
+      <div class="notice-header">
+        <span class="notice-icon">⚠️</span>
+        <span class="notice-title">Important Notice</span>
+      </div>
+      <div class="notice-content">
+        <p>Be at boarding point before 30 minutes.</p>
+        <p>Show V-Code to conductor &amp; obtain regular ticket once you onboard.</p>
+        <p>
+          You will be sent a eTicket via email &amp; SMS. Once bus starts its journey,
+          we will notify you via SMS &amp; you can track the bus.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER + BOTTOM NAV -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" class="whatsapp-icon" alt="WhatsApp" /> Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" class="whatsapp-icon" alt="Call" /> Call us – 1315
+      </button>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom"><img src="images/h.png" class="nav-icon-bottom"/><span>Home</span></div>
+      <div class="nav-item-bottom"><img src="images/j.png" class="nav-icon-bottom"/><span>Journey</span></div>
+      <div class="nav-item-bottom"><img src="images/al.png" class="nav-icon-bottom"/><span>Alert</span></div>
+      <div class="nav-item-bottom"><img src="images/ac.png" class="nav-icon-bottom"/><span>Account</span></div>
+    </nav>
+  </footer>
+
+  <!-- Initialize Firebase and run payment_successful.js -->
+  <script type="module" src="js/firebaseConfig.js"></script>
+  <script type="module" src="js/payment_successful.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+</body>
+</html>

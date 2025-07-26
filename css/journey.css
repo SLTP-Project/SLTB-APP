@@ -1,0 +1,104 @@
+/* journey.css */
+/* Import global nav/header/footer styles */
+@import url('buslist.css');
+
+/* Page title */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #003b8b;
+  margin: 16px;
+}
+
+/* V‑code card */
+.vcode-card {
+  background: #EFF8FF;
+  border-radius: 12px;
+  margin: 0 16px 24px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  text-align: left;
+}
+.vcode-card label {
+  display: block;
+  margin-bottom: 8px;
+  color: #102542;
+}
+.vcode-card input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.vcode-card .btn-outline {
+  width: 100%;
+}
+.vcode-error {
+  color: #c62828;
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-top: 4px;
+}
+
+/* History */
+.history-section {
+  margin: 0 16px 40px;
+}
+.history-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #003b8b;
+  margin-bottom: 12px;
+}
+.history-list .history-item {
+  background: #EFF8FF;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hist-date {
+  color: #555;
+  font-size: 0.85rem;
+  flex: 1;
+}
+.hist-route {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 2;
+  color: #333;
+  font-size: 0.9rem;
+}
+.hist-icon {
+  width: 16px; height: 16px;
+}
+.dashes {
+  color: #bbb;
+  margin: 0 8px;
+}
+.history-list .loading {
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+}
+/* —————————————— TRACK JOURNEY Button —————————————— */
+#track-journey-btn {
+  background-color: #F17218;
+  color: #FFFFFF;
+  height: 47px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#track-journey-btn:hover {
+  background-color: #d96b17;
+}

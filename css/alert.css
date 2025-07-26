@@ -1,0 +1,96 @@
+/* alert.css */
+
+/* Reuse buslist.css for header/footer/nav */
+/* Adjust spacing */
+main {
+  margin-top: -100px;
+  margin-bottom: 80px;
+}
+#alerts-box {
+  margin: 8px 16px;
+}
+#alerts-box .box-header {
+  background: #D4ECFF;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #102542;
+}
+#alerts-box .box-body {
+  padding: 20px 12px;
+}
+/* Each alert item */
+.alert-item {
+  border-bottom: 1px solid #B0D9FF;
+  padding: 12px 0;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.alert-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #102542;
+  padding-bottom: 6px;
+  line-height: 1.4;
+}
+.alert-timestamp {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 4px;
+}
+.alert-delete-btn {
+  margin-left: 12px;
+  background: none;
+  border: none;
+  flex:1;
+  color: #FF6B00;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.alert-delete-btn:hover {
+  text-decoration: underline;
+}
+.alert-item {
+  border: 2px solid #B0D9FF;
+  background: #f3f9ff;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.alert-item:hover {
+  transform: translateY(-2px);
+}
+
+.alert-text {
+  font-size: 1rem;
+  color: #102542;
+  margin-bottom: 6px;
+}
+
+.alert-timestamp {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.alert-delete-btn {
+  position: absolute;
+  top: 62px;
+  right: 12px;
+  background: #fff;
+  border: 1px solid #ff6b00;
+  color: #ff6b00;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.alert-delete-btn:hover {
+  background: #ffe9db;
+}
+

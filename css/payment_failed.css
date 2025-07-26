@@ -1,0 +1,114 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   IMPORT BUSLIST CSS FOR HEADER, NAVDRAWER, FOOTER, ETC.
+───────────────────────────────────────────────────────────────────────── */
+@import url('buslist.css');
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PAYMENT FAILED PAGE STYLES
+───────────────────────────────────────────────────────────────────────── */
+
+/* BOX CONTAINER */
+.failed-box {
+  background: #EFF8FF; /* same light-blue background */
+  border: 1px solid #EFF8FF; /* effectively no visible border */
+  border-radius: 16px;
+  margin: 16px;
+  padding: 20px 8px 24px 8px;
+  box-shadow: 0dvi 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+/* ALERT ICON */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+/* “Payment Failed” Text */
+.failed-text {
+  margin-bottom: 40px;
+}
+
+.failed-heading {
+  display: block;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  color: #102542;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.failed-message {
+  display: block;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #102542;
+  text-align: center;
+  padding: 0 16px;
+}
+
+/* BUTTONS CONTAINER */
+.failed-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* RETRY PAYMENT BUTTON */
+.retry-btn {
+  width: 312px;
+  max-width: calc(100% - 32px);
+  height: 47px;
+  background: #FF6B00;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 31px;
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.retry-btn:hover {
+  background: #A92C1C;
+}
+
+/* CANCEL BUTTON */
+.cancel-btn {
+  width: 312px;
+  max-width: calc(100% - 32px);
+  height: 47px;
+  background: #ffffff;
+  color: #777777;
+  border: 1px solid #B0B0B0;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 31px;
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #F5F5F5;
+}
+
+/* Ensure main content does not overlap footer */
+main {
+    margin-bottom: 100px;
+    padding-top:10%;
+    padding-left: 5%;
+    padding-right: 5%;
+}

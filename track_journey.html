@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e‑seat – Track Journey</title>
+  <link rel="stylesheet" href="css/auth.css" />
+  <style>
+    .track-card { max-width:360px; margin: 100px auto; padding:24px; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; }
+    .track-card h1 { margin-bottom:16px; }
+    .track-card input { width:100%; padding:12px; margin-bottom:12px; border:1px solid #ccc; border-radius:6px; font-size:1rem; }
+    .track-card button { width:100%; padding:12px; font-size:1rem; background:#ff6b00; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+    .error { color:#d93025; font-size:.85rem; min-height:1.2em; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+  <div class="track-card">
+    <h1>Track My Journey</h1>
+    <div id="error-msg" class="error"></div>
+    <input type="text" id="vcode" placeholder="Enter your V‑Code" />
+    <button id="track-btn">Track Journey</button>
+  </div>
+
+  <script type="module" src="js/track_journey.js"></script>
+</body>
+</html>

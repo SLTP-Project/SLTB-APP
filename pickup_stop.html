@@ -1,0 +1,207 @@
+<!-- pickup_stop.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Select Pickup &amp; Drop Stop</title>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="css/buslist.css" />
+  <!-- This page’s styles -->
+  <link rel="stylesheet" href="css/pickup_stop.css" />
+  <style>
+    /* Ensure html/body fill the viewport so map can fill */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    /* Map container covers full viewport behind header/footer/overlay */
+    #map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0; /* behind overlay and header/footer */
+    }
+    /* Ensure header is above map but only small height */
+    .pickup-header {
+      position: relative;
+      z-index: 2;
+      height: 56px; /* adjust as your header height */
+      background: rgba(255,255,255,0.9);
+    }
+    .pickup-header .header-content {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    /* Map controls panel, just below header */
+    #map-controls {
+      position: absolute;
+      top: 56px; /* same as header height */
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      padding: 4px;
+      display: flex;
+      gap: 4px;
+      z-index: 2;
+      /* Optional: small shadow */
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    #map-controls button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #ffffff;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      padding: 0;
+    }
+    #map-controls button:hover {
+      background: #f0f0f0;
+    }
+    /* Overlay card above map */
+    .pickup-card {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 80px; /* adjust if footer overlaps */
+      background: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+    /* Footer above map but under overlay card */
+    footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      background: #ffffff;
+    }
+    /* Ensure main area does not add extra margins */
+    main { margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION DRAWER -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-banner pickup-header">
+    <div class="header-content">
+      <button id="back-btn" class="back-btn" aria-label="Go back">&larr;</button>
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+        <span class="logo-text">SLTB <b>e-seat</b></span>
+      </div>
+      <div id="menu-btn" class="menu-btn" aria-label="Open menu">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- Map controls panel -->
+  <div id="map-controls">
+    <button id="zoom-in" title="Zoom In">+</button>
+    <button id="zoom-out" title="Zoom Out">−</button>
+    <button id="pan-up" title="Pan Up">↑</button>
+    <button id="pan-down" title="Pan Down">↓</button>
+    <button id="pan-left" title="Pan Left">←</button>
+    <button id="pan-right" title="Pan Right">→</button>
+  </div>
+
+  <!-- Map container -->
+  <div id="map"></div>
+
+  <!-- Overlay card -->
+  <main>
+    <div class="pickup-card">
+      <!-- Pickup Stop Input -->
+      <div class="input-group-stop">
+        <div class="icon-label">
+          <!-- f.png icon for pickup -->
+          <img src="images/f.png" alt="Pickup icon" id="pickup-icon" class="stop-icon" />
+          <!-- This label text will be replaced dynamically -->
+          <span class="stop-label" id="pickup-label">Pickup stop</span>
+        </div>
+        <input
+          type="text"
+          id="pickup-input"
+          class="stop-input"
+          placeholder="Select a nearby bus stop"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Drop Stop Input -->
+      <div class="input-group-stop">
+        <div class="icon-label">
+          <!-- t.png icon for drop -->
+          <img src="images/t.png" alt="Drop icon" id="drop-icon" class="stop-icon" />
+          <!-- This label text will be replaced dynamically -->
+          <span class="stop-label" id="drop-label">Drop stop</span>
+        </div>
+        <input
+          type="text"
+          id="drop-input"
+          class="stop-input"
+          placeholder="Where are you going?"
+          autocomplete="off"
+          disabled
+        />
+      </div>
+
+      <!-- Next Button -->
+      <button id="next-btn" class="btn-outline" disabled>Next</button>
+    </div>
+  </main>
+
+  <!-- FOOTER WITH BOTTOM NAVIGATION -->
+  <footer>
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom" onclick="location.href='home.html'">
+        <img src="images/h.png" class="nav-icon-bottom" alt="Home" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='journey.html'">
+        <img src="images/j.png" class="nav-icon-bottom" alt="Journey" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='alert.html'">
+        <img src="images/al.png" class="nav-icon-bottom" alt="Alert" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='account.html'">
+        <img src="images/ac.png" class="nav-icon-bottom" alt="Account" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <!-- 1) Load Google Maps JS API with Places & Geometry library, using your API key -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApRmAnqe5yc_P73u2TWdgYhrSd2M7Em2o&libraries=places,geometry"
+  ></script>
+  <!-- 2) Import firebaseConfig (must export `db`) and this page’s JS -->
+  <script type="module" src="js/pickup_stop.js"></script>
+</body>
+</html>

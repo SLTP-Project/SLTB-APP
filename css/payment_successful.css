@@ -1,0 +1,104 @@
+@import url('buslist.css');
+
+/* Container */
+.success-box {
+  background: #EFF8FF;
+  border-radius: 16px;
+  margin: 16px;
+  padding: 16px 8px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Icon */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+/* Thank you text */
+.thank-you {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.thank-you h3 {
+  font-size: 1rem;
+  color: #102542;
+  margin: 0;
+}
+.thank-you h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #102542;
+  margin: 4px 0 0;
+}
+
+/* Details */
+.details-table {
+  margin: 0 auto 24px;
+  width: 100%;
+  color: #102542;
+}
+.details-table .row {
+  display:flex; justify-content:space-between;
+  padding:6px 16px;
+}
+.details-table .label { font-weight:500; }
+.details-table .value { font-weight:600; }
+
+/* Primary button */
+.see-journey-btn {
+  display:block;
+  width:calc(100% - 32px);
+  margin:0 auto 8px;
+  background:#FF6B00; color:#fff;
+  border:none; border-radius:8px;
+  padding:14px 0; font-size:1rem; font-weight:600;
+  cursor:pointer; transition:background .2s;
+}
+.see-journey-btn:hover { background:#A92C1C; }
+
+/* Secondary button */
+.skip-btn {
+  display:block;
+  width:calc(100% - 32px);
+  margin:0 auto 24px;
+  background:#fff; color:#FF6B00;
+  border:2px solid #FF6B00; border-radius:8px;
+  padding:14px 0; font-size:1rem; font-weight:600;
+  cursor:pointer; transition:background .2s,color .2s;
+}
+.skip-btn:hover {
+  background:#FF6B00; color:#fff;
+}
+
+/* Notice box */
+.notice-box {
+  background:#004EA8; color:#fff;
+  border-radius:12px; margin:0 16px 24px; padding:16px;
+}
+.notice-header {
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:8px;
+}
+.notice-title { font-size:1rem; font-weight:600; }
+.notice-content p {
+  font-size:.9rem; line-height:1.4; margin:8px 0;
+}
+
+.download-btn {
+  display:block;
+  width:calc(100% - 32px);
+  margin:0 auto 8px;
+  background:#0056b3; color:#fff;
+  border:none; border-radius:8px;
+  padding:14px 0; font-size:1rem; font-weight:600;
+  cursor:pointer; transition:background .2s;
+}
+.download-btn:hover {
+  background-color: #FF6B00;
+}
+
+
+/* Prevent overlap with footer */
+main { margin-bottom:60px; }

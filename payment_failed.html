@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Payment Failed</title>
+  <!-- Reuse buslist.css for header/footer/nav styling -->
+  <link rel="stylesheet" href="css/buslist.css" />
+  <!-- Page‐specific CSS -->
+  <link rel="stylesheet" href="css/payment_failed.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER (same as other pages) -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER + BACKGROUND BANNER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+    <div class="header-content">
+      <!-- Go Back Button (back to payment.html) -->
+      <button id="back-btn" class="back-btn"><</button>
+
+      <!-- Centered Logo -->
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+      </div>
+
+      <!-- Hamburger Menu -->
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT: Payment Failed Message -->
+  <main>
+    <div class="box failed-box">
+      <!-- Alert Icon in Center -->
+      <div class="icon-container">
+        <!-- Inline SVG for a red exclamation circle: -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="64"
+          height="64"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#D32F2F"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-alert-circle"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <circle cx="12" cy="16" r="1"></circle>
+        </svg>
+      </div>
+
+      <!-- “Payment Failed” Title -->
+      <div class="failed-text">
+        <span class="failed-heading">Payment Failed</span>
+        <span class="failed-message">
+          We were unable to process your payment. Please try again or use a different payment method.
+        </span>
+      </div>
+
+      <!-- Retry / Cancel Buttons -->
+      <div class="failed-buttons">
+        <button id="retry-btn" class="retry-btn">Retry Payment</button>
+        <button id="cancel-btn" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: WhatsApp + Call + Bottom Navigation -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" alt="WhatsApp icon" class="whatsapp-icon" />
+        Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" alt="Call icon" class="whatsapp-icon" />
+        Call us – 1315
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom">
+        <img src="images/h.png" alt="Home" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/j.png" alt="Journey" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/al.png" alt="Alert" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/ac.png" alt="Account" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <script>
+  // On loading payment_failed page
+  localStorage.removeItem("pendingBooking");
+</script>
+
+  <!-- Page‐specific JavaScript -->
+  <script src="js/payment_failed.js"></script>
+</body>
+</html>

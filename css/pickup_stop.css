@@ -1,0 +1,151 @@
+/* pickup_stop.css */
+/* Import global styles if needed */
+@import url('buslist.css');
+
+/* HEADER: only top bar */
+.pickup-header {
+  /* height set inline or here; main point is NOT 100vh */
+  height: 56px;
+  background: rgba(255,255,255,0.9);
+  position: relative;
+  z-index: 2;
+}
+.pickup-header .header-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+/* Back button, logo, menu */
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #102542;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-img {
+  height: 28px;
+  width: auto;
+}
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #102542;
+}
+.menu-btn {
+  font-size: 1.6rem;
+  color: #102542;
+  cursor: pointer;
+}
+
+/* OVERLAY CARD */
+main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.pickup-card {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 80px; /* adjust if your footer height differs */
+  background: #EFF8FF;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  z-index: 2;
+}
+
+/* Input groups */
+.input-group-stop {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+/* Icon + label row */
+.icon-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* STOP ICONS: same size for pickup & drop */
+.stop-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* Label text */
+.stop-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Input styling */
+.stop-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #333;
+}
+.stop-input:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* NEXT button */
+#next-btn {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid #FF6B00;
+  background: #EFF8FF;
+  color: #FF6B00;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#next-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#next-btn:not(:disabled):hover {
+  background: #FF6B00;
+  color: #ffffff;
+}
+
+/* Footer positioning */
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: 2;
+}
+/* Remove extra main margin if buslist.css sets one */
+main { margin-bottom: 0; }

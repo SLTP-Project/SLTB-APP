@@ -1,0 +1,87 @@
+<!-- journey.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF‑8" />
+  <meta name="viewport" content="width=device‑width, initial‑scale=1.0"/>
+  <title>SLTB e‑seat – Active Journeys</title>
+  <!-- Global styles (header/footer/nav) -->
+  <link rel="stylesheet" href="css/buslist.css" />
+  <!-- Page-specific -->
+  <link rel="stylesheet" href="css/journey.css" />
+</head>
+<body>
+  <!-- NAV DRAWER -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item active"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" class="banner-bg" alt="Background"/>
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="images/logo.png" class="logo-img" alt="SLTB"/>
+        <span class="logo-text">SLTB <b style="color:#006afd">e‑seat</b></span>
+      </div>
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- PAGE TITLE -->
+    <h1 class="page-title">Active journeys</h1>
+
+    <!-- TRACK BY V‑CODE -->
+    <section class="vcode-card">
+      <label for="vcode-input">Enter your V‑Code:</label>
+      <input type="text" id="vcode-input" placeholder="e.g. AbCd1234"/>
+      <button id="track-journey-btn" class="btn-outline" >TRACK JOURNEY</button>
+      <p id="vcode-error" class="vcode-error"></p>
+    </section>
+
+    <!-- HISTORY (last 4 bookings) -->
+    <section class="history-section">
+      <h2>History</h2>
+      <div id="history-list" class="history-list">
+        <p class="loading">Loading…</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" class="whatsapp-icon" alt="WhatsApp"/> Need help?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" class="whatsapp-icon" alt="Call"/> Call us – 1315
+      </button>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom" onclick="location.href='home.html'">
+        <img src="images/h1.png" class="nav-icon-bottom" alt="Home"/><span>Home</span>
+      </div>
+      <div class="nav-item-bottom active" onclick="location.href='journey.html'">
+        <img src="images/j1.png" class="nav-icon-bottom" alt="Journey"/><span>Journey</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='alert.html'">
+        <img src="images/al.png" class="nav-icon-bottom" alt="Alert"/><span>Alert</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='account.html'">
+        <img src="images/ac.png" class="nav-icon-bottom" alt="Account"/><span>Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <!-- Firebase + your JS -->
+  <script type="module" src="js/firebaseConfig.js"></script>
+  <script type="module" src="js/journey.js"></script>
+</body>
+</html>

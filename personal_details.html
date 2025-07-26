@@ -1,0 +1,184 @@
+<!-- personal_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Personal Details</title>
+  <!-- Reuse global header/footer/nav styles -->
+  <link rel="stylesheet" href="css/buslist.css" />
+  <!-- If select_seat.css has any Box-2 overrides affecting Box1 style, ensure it's loaded or covered by personal_details.css -->
+  <link rel="stylesheet" href="css/personal_details.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER + BACKGROUND BANNER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+    <div class="header-content">
+      <!-- Go Back Button (to select_seat.html) -->
+      <button id="back-btn" class="back-btn" aria-label="Go back">&lt;</button>
+
+      <!-- Centered Logo -->
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+      </div>
+
+      <!-- Hamburger Menu -->
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT: BOX 1 (route details), BOX 2 (form), BOX 3 (fare) -->
+  <main>
+    <!-- BOX 1: Route Details (identical structure to select_seat.html Box1) -->
+    <div id="route-box" class="box box-2">
+      <div id="route-box-body" class="box-body">
+        <!-- JS will populate stops-row, timeline, times, divider, fare, availability here -->
+        <p style="text-align:center; color:#555;">Loading route details...</p>
+      </div>
+    </div>
+
+    <!-- BOX 2: “Your details” form -->
+    <div class="box box-2">
+      <div class="box-header form-header">
+        <span>Your details</span>
+      </div>
+      <div class="box-body">
+        <form id="personal-form" novalidate>
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              required
+            />
+          </div>
+
+          <!-- Mobile Number -->
+          <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              placeholder="077 123 4567"
+              pattern="^[0-9\s\-()+]{7,20}$"
+              required
+            />
+          </div>
+
+          <!-- NIC / Passport No -->
+          <div class="form-group">
+            <label for="nic">NIC / Passport No</label>
+            <input
+              type="text"
+              id="nic"
+              name="nic"
+              placeholder="012345678V"
+              required
+            />
+          </div>
+
+          <!-- Email Address -->
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="name@example.mail"
+              required
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- BOX 3: Fare Breakdown (static or dynamic) -->
+    <div class="box box-3">
+      <div class="fare-header">Fare Breakdown</div>
+      <div class="fare-body">
+        <div class="fare-row">
+          <span>Bus Fare</span>
+          <span id="fare-bus">1,376.00</span>
+        </div>
+        <div class="fare-row">
+          <span>Convenience Fee</span>
+          <span id="fare-conv">110.00</span>
+        </div>
+        <div class="fare-row">
+          <span>Bank Charge</span>
+          <span id="fare-bank">14.00</span>
+        </div>
+        <div class="fare-row total-row">
+          <span>Total Pay</span>
+          <span id="fare-total" class="total-amount">1,500.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms & Conditions Checkbox -->
+    <div class="terms-container">
+      <input type="checkbox" id="agree-terms" />
+      <label for="agree-terms">
+        I agree to all 
+        <a href="#" class="terms-link" target="_blank">Terms & Conditions</a>.
+      </label>
+    </div>
+
+    <!-- Proceed To Pay Button -->
+    <button id="proceed-btn" class="proceed-btn">Proceed To Pay</button>
+  </main>
+
+  <!-- FOOTER: WhatsApp + Call + Bottom Nav -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" alt="WhatsApp icon" class="whatsapp-icon" />
+        Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" alt="Call icon" class="whatsapp-icon" />
+        Call us – 1315
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom">
+        <img src="images/h.png" alt="Home" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/j.png" alt="Journey" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/al.png" alt="Alert" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/ac.png" alt="Account" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <!-- Include JS -->
+  <script src="js/personal_details.js"></script>
+
+  
+</body>
+</html>

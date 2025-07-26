@@ -1,0 +1,149 @@
+<!-- buslist.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat - Bus List</title>
+  <link rel="stylesheet" href="css/buslist.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER (same as home page) -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.htmt">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER + BACKGROUND BANNER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+    <div class="header-content">
+      <!-- Go Back Button -->
+      <button id="back-btn" class="back-btn">&lt;</button>
+      <!-- Centered Logo -->
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+      </div>
+      <!-- Hamburger Menu -->
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT: FIVE BOXES -->
+  <main>
+    <!-- Box 1: dynamic From > To and date -->
+    <div class="box box-1">
+      <div class="box-content">
+        <div class="line1" id="box1-line1">From > To</div>
+        <div class="line2" id="box1-line2">DD / Mon / YYYY</div>
+      </div>
+    </div>
+
+    <!-- Box 2: full route -->
+    <div class="box box-2">
+      <div class="box-header">SLTB Bus - Route no : 02</div>
+      <div class="box-body">
+        <!-- JS will populate stops-row, timeline, times -->
+        <div class="stops-row" id="box2-stops-row">
+          <!-- dynamic spans inserted here -->
+        </div>
+        <div class="timeline" id="box2-timeline">
+          <!-- JS will insert timeline-line, active-line, dots -->
+        </div>
+        <div class="times" id="box2-times">
+          <!-- JS will insert time/date items, using existing time values from HTML or JS config -->
+        </div>
+        <div class="view-all">view all stops and times &gt;&gt;</div>
+        <div class="divider"></div>
+        <div class="fare">1500 LKR / seat</div>
+        <div class="availability" id="box2-availability">40 Seats available – Closing : DD Mon, HH:MM</div>
+        <button id="search-btn1" class="btn-book">BOOK SEAT</button>
+      </div>
+    </div>
+
+    <!-- Box 3: 3-stop variant -->
+    <div class="box box-3">
+      <div class="box-header">SLTB Bus - Route no : 20</div>
+      <div class="box-body">
+        <div class="stops-row" id="box3-stops-row"></div>
+        <div class="timeline" id="box3-timeline"></div>
+        <div class="times" id="box3-times"></div>
+        <div class="view-all">view all stops and times &gt;&gt;</div>
+        <div class="divider"></div>
+        <div class="fare">1500 LKR / seat</div>
+        <div class="availability" id="box3-availability">09 Seats available – Closing : DD Mon, HH:MM</div>
+        <button id="search-btn2" class="btn-book">BOOK SEAT</button>
+      </div>
+    </div>
+
+    <!-- Box 4: direct From→To -->
+    <div class="box box-4">
+      <div class="box-header">SLTB Bus - Route no : 222</div>
+      <div class="box-body">
+        <div class="stops-row" id="box4-stops-row"></div>
+        <div class="timeline" id="box4-timeline"></div>
+        <div class="times" id="box4-times"></div>
+        <div class="view-all">view all stops and times &gt;&gt;</div>
+        <div class="divider"></div>
+        <div class="fare">1500 LKR / seat</div>
+        <div class="availability" id="box4-availability">40 Seats available – Closing : DD Mon, HH:MM</div>
+        <button id="search-btn3" class="btn-book">BOOK SEAT</button>
+      </div>
+    </div>
+
+    <!-- Box 5: another 3-stop variant -->
+    <div class="box box-5">
+      <div class="box-header">SLTB Bus - Route no : 202</div>
+      <div class="box-body">
+        <div class="stops-row" id="box5-stops-row"></div>
+        <div class="timeline" id="box5-timeline"></div>
+        <div class="times" id="box5-times"></div>
+        <div class="view-all">view all stops and times &gt;&gt;</div>
+        <div class="divider"></div>
+        <div class="fare">1500 LKR / seat</div>
+        <div class="availability" id="box5-availability">00 Seats available</div>
+        <button id="search-btn4" class="btn-soldout">Sold Out</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER WITH HELP BUTTONS AND BOTTOM NAVIGATION (same as home) -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" alt="WhatsApp icon" class="whatsapp-icon" />
+        Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" alt="Call icon" class="whatsapp-icon" />
+        Call us - 1315
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom">
+        <img src="images/h.png" alt="Home" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/j.png" alt="Journey" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/al.png" alt="Alert" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/ac.png" alt="Account" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <script src="js/buslist.js"></script>
+</body>
+</html>

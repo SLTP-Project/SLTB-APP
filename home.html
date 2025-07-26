@@ -1,0 +1,187 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER (hidden by default) -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item active"><a href="#">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER + BACKGROUND BANNER -->
+  <header class="header-banner">
+    <!-- Background image at 80% opacity -->
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+        <span class="logo-text">SLTB <span style="color: #006afd;"><b> e-seat</b></span></span>
+      </div>
+      <div id="menu-btn" class="menu-btn" aria-label="Open menu">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- BOOKING SECTION (floats on top of banner) -->
+    <section class="booking-section">
+      <h1 class="booking-title">Book your bus with confidence</h1>
+      <p class="booking-subtitle">Travel Smart, Safe and Informed</p>
+
+      <div class="input-group">
+        <!-- FROM INPUT WITH ICON + DATALIST -->
+        <div class="input-with-icon">
+          <img src="images/f.png" alt="From icon" class="input-icon" />
+          <input 
+            type="text" 
+            id="from" 
+            class="dropdown-input" 
+            placeholder="From" 
+            list="locations-list"
+            autocomplete="off"
+          />
+          <!-- Datalist: predefined locations -->
+          <datalist id="locations-list">
+            <option value="Colombo">
+            <option value="Negombo">
+            <option value="Killinochchi">
+            <option value="Jaffna">
+            <!-- Add more as needed -->
+          </datalist>
+        </div>
+
+        <!-- TO INPUT WITH ICON + DATALIST -->
+        <div class="input-with-icon">
+          <img src="images/t.png" alt="To icon" class="input-icon" />
+          <input 
+            type="text" 
+            id="to" 
+            class="dropdown-input" 
+            placeholder="To" 
+            list="locations-list"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- TRAVEL DATE -->
+        <div class="date-container">
+          <label for="travel-date" class="date-label">Travel date</label>
+          <div class="date-box">
+            <div class="date-left">
+              <span class="date-day">23</span>
+            </div>
+            <div class="date-right">
+              <span class="date-weekday">Saturday</span>
+              <span class="date-month">August 2025</span>
+            </div>
+            <!-- Native date input (transparent text/background) -->
+            <input
+              type="date"
+              id="travel-date"
+              class="date-input"
+              value=""
+            />
+          </div>
+        </div>
+
+        <!-- SEARCH BUTTON -->
+        <button id="search-btn" class="search-btn">SEARCH BUSES</button>
+      </div>
+    </section>
+
+    <!-- TRACKING FEATURES SECTION (unchanged) -->
+    <section class="track-info">
+      <p class="track-text">
+        Once booked,<br>
+        <b>tap “Track My Bus”</b><br>
+        to watch your vehicle in motion on the map.
+      </p>
+
+      <div class="features-vertical">
+        <div class="feature-item">
+          <img src="images/2.png" alt="Live arrival icon" class="feature-icon"/>
+          <p class="feature-text">Live arrival<br>countdowns</p>
+        </div>
+        <div class="feature-divider"></div>
+        <div class="feature-item">
+          <img src="images/2.png" alt="Location icon" class="feature-icon"/>
+          <p class="feature-text">Location-based<br>stop alerts</p>
+        </div>
+        <div class="feature-divider"></div>
+        <div class="feature-item">
+          <img src="images/3.png" alt="Delay icon" class="feature-icon"/>
+          <p class="feature-text">Delay or detour<br>notifications</p>
+        </div>
+      </div>
+
+      <p class="note">No more guessing. No more endless waiting at bus stops.</p>
+    </section>
+  </main>
+
+  <!-- CUSTOM MODAL DIALOG -->
+  <div id="custom-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <p id="modal-message">Please select From, To, and a travel date.</p>
+      <button id="modal-ok-btn" class="modal-ok-btn">OK</button>
+    </div>
+  </div>
+
+  <!-- FOOTER WITH HELP BUTTONS AND BOTTOM NAVIGATION -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" alt="WhatsApp icon" class="whatsapp-icon" />
+        Need help ?
+      </button>
+      <button class="call-btn">  
+        <img src="images/5.png" alt="Phone icon" class="whatsapp-icon" /> Call us - 1315
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom active">
+        <img src="images/h.png" alt="Home" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/j.png" alt="Journey" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/al.png" alt="Alert" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/ac.png" alt="Account" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script type="module">
+  import { auth } from './js/firebaseConfig.js';
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      // Not logged in, redirect to login page
+      window.location.href = 'index.html';
+    }
+    // else user is logged in, do nothing and let page load normally
+  });
+</script>
+
+</body>
+</html>

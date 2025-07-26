@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Select Seat</title>
+  <!-- Reuse global header/footer/nav styles -->
+  <link rel="stylesheet" href="css/buslist.css" />
+  <!-- Page-specific CSS -->
+  <link rel="stylesheet" href="css/select_seat.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER (same as other pages) -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="alert.html">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER + BACKGROUND BANNER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg" />
+    <div class="header-content">
+      <!-- Go Back Button (navigates back to previous) -->
+      <button id="back-btn" class="back-btn" aria-label="Go back">&lt;</button>
+
+      <!-- Centered Logo -->
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img" />
+      </div>
+
+      <!-- Hamburger Menu -->
+      <div id="menu-btn" class="menu-btn" aria-label="Open menu">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT: dynamically populated first box, then seating plan, then notice -->
+  <main>
+    <!-- BOX 1: Route Details (identical to Bus List entry, but no header, no “view all” or BOOK SEAT) -->
+    <div id="route-box" class="box box-2">
+      <div id="route-box-body" class="box-body">
+        <!-- JS will populate stops-row, timeline, times, divider, fare, availability here -->
+        <!-- Placeholder while JS loads -->
+        <p style="text-align:center; color:#555;">Loading route details...</p>
+      </div>
+    </div>
+
+    <!-- BOX 2: Seating Plan -->
+    <div class="box box-2">
+      <div class="box-header seating-header">
+        <!-- We'll set the route number text dynamically in JS -->
+        <span id="route-number-text" class="bold-line">Seating Plan SLTB Bus – Route no :</span>
+        <span id="route-instruction-text" class="normal-line">Click on an available seat to select or deselect</span>
+      </div>
+
+      <div class="box-body">
+        <!-- Legend -->
+        <div class="legend-container">
+          <div class="legend-row">
+            <div class="legend-item">
+              <div class="legend-square available">
+                <div class="square-underline"></div>
+              </div>
+              <span>Available seats</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-square counter">
+                <div class="square-underline"></div>
+              </div>
+              <span>Counter seats</span>
+            </div>
+          </div>
+          <div class="legend-row">
+            <div class="legend-item">
+              <div class="legend-square booked">
+                <div class="square-underline"></div>
+              </div>
+              <span>Booked seats</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-square processing">
+                <div class="square-underline"></div>
+              </div>
+              <span>Processing seats</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat Map Wrapper -->
+        <div class="seat-map-wrapper">
+          <!-- Steering wheel icon -->
+          <img src="images/6.png" alt="Steering Wheel" class="steering-icon" />
+
+          <!-- Seating Grid: 6 columns × 11 rows -->
+          <div class="seating-grid">
+            <!-- Row 1: seats 1-5 are counter seats by your original design -->
+            <button class="seat counter" data-seat="1">1</button>
+            <button class="seat counter" data-seat="2">2</button>
+            <div class="empty-cell"></div>
+            <button class="seat counter" data-seat="3">3</button>
+            <button class="seat counter" data-seat="4">4</button>
+            <button class="seat counter" data-seat="5">5</button>
+
+            <!-- Row 2: originally had seats 6-10 as booked in your static, but now we make them available by default.
+                 If any of these become booked (via Firestore), JS will mark them. -->
+            <button class="seat available" data-seat="6">6</button>
+            <button class="seat available" data-seat="7">7</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="8">8</button>
+            <button class="seat available" data-seat="9">9</button>
+            <button class="seat available" data-seat="10">10</button>
+
+            <!-- Row 3 -->
+            <button class="seat available" data-seat="11">11</button>
+            <button class="seat available" data-seat="12">12</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="13">13</button>
+            <button class="seat available" data-seat="14">14</button>
+            <button class="seat available" data-seat="15">15</button>
+
+            <!-- Row 4 -->
+            <button class="seat available" data-seat="16">16</button>
+            <button class="seat available" data-seat="17">17</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="18">18</button>
+            <button class="seat available" data-seat="19">19</button>
+            <button class="seat available" data-seat="20">20</button>
+
+            <!-- Row 5 -->
+            <button class="seat available" data-seat="21">21</button>
+            <button class="seat available" data-seat="22">22</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="23">23</button>
+            <button class="seat available" data-seat="24">24</button>
+            <button class="seat available" data-seat="25">25</button>
+
+            <!-- Row 6 -->
+            <button class="seat available" data-seat="26">26</button>
+            <button class="seat available" data-seat="27">27</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="28">28</button>
+            <button class="seat available" data-seat="29">29</button>
+            <button class="seat available" data-seat="30">30</button>
+
+            <!-- Row 7 -->
+            <button class="seat available" data-seat="31">31</button>
+            <button class="seat available" data-seat="32">32</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="33">33</button>
+            <button class="seat available" data-seat="34">34</button>
+            <button class="seat available" data-seat="35">35</button>
+
+            <!-- Row 8 -->
+            <button class="seat available" data-seat="36">36</button>
+            <button class="seat available" data-seat="37">37</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="38">38</button>
+            <button class="seat available" data-seat="39">39</button>
+            <button class="seat available" data-seat="40">40</button>
+
+            <!-- Row 9 -->
+            <button class="seat available" data-seat="41">41</button>
+            <button class="seat available" data-seat="42">42</button>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="43">43</button>
+            <button class="seat available" data-seat="44">44</button>
+            <button class="seat available" data-seat="45">45</button>
+
+            <!-- Row 10 -->
+            <div class="empty-cell"></div>
+            <div class="empty-cell"></div>
+            <div class="empty-cell"></div>
+            <button class="seat available" data-seat="46">46</button>
+            <button class="seat available" data-seat="47">47</button>
+            <button class="seat available" data-seat="48">48</button>
+
+            <!-- Row 11 -->
+            <button class="seat available" data-seat="49">49</button>
+            <button class="seat available" data-seat="50">50</button>
+            <button class="seat available" data-seat="51">51</button>
+            <button class="seat available" data-seat="52">52</button>
+            <button class="seat available" data-seat="53">53</button>
+            <button class="seat available" data-seat="54">54</button>
+          </div> <!-- /.seating-grid -->
+
+          <!-- “CONTINUE” button -->
+          <button id="continue-btn" class="continue-btn">CONTINUE</button>
+        </div> <!-- /.seat-map-wrapper -->
+      </div> <!-- /.box-body -->
+    </div> <!-- /.box-2 -->
+
+    <!-- BOX 3: Important Notice (blue background, white text) -->
+    <div class="box box-3">
+      <div class="important-notice">
+        <div class="notice-header">
+          <span class="notice-icon">⚠️</span>
+          <span class="notice-title">Important Notice</span>
+        </div>
+        <p class="notice-text">
+          This notice absolves us of responsibility for luggage damage due to inadequate protection or fragile items. 
+          Refunds won't be given for missing boarding or transport issues. No full refunds for transport breakdowns; 
+          service fees are non-refundable.
+        </p>
+        <p class="notice-text" style="margin-top: 8px;">
+          Please ensure to double-check the location and timing details before confirming your online ticket booking.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- CUSTOM MODAL DIALOG -->
+  <div id="seat-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="seat-modal-title">
+      <p id="seat-modal-message">Please select at least one seat before continuing.</p>
+      <button id="seat-modal-ok-btn" class="modal-ok-btn">OK</button>
+    </div>
+  </div>
+
+  <!-- FOOTER: WhatsApp + Call + Bottom Navigation -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" alt="WhatsApp icon" class="whatsapp-icon" />
+        Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" alt="Call icon" class="whatsapp-icon" />
+        Call us – 1315
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom">
+        <img src="images/h.png" alt="Home" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Home</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/j.png" alt="Journey" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Journey</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/al.png" alt="Alert" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Alert</span>
+      </div>
+      <div class="nav-item-bottom">
+        <img src="images/ac.png" alt="Account" class="nav-icon-bottom" />
+        <span class="nav-label-bottom">Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <!-- Page-specific JavaScript -->
+  <!-- Make sure firebaseConfig.js exports `db` (initialized Firestore) -->
+  <script type="module" src="js/firebaseConfig.js"></script>
+  <script type="module" src="js/select_seat.js"></script>
+</body>
+</html>

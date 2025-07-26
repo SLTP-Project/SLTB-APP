@@ -1,0 +1,191 @@
+/* Reuse buslist.css for header/footer/nav */
+/* Adjust spacing: bring boxes up closer to header */
+@import url('buslist.css');
+
+/* HEADER: only top bar */
+.pickup-header {
+  /* height set inline or here; main point is NOT 100vh */
+  height: 56px;
+  background: rgba(255,255,255,0.9);
+  position: relative;
+  z-index: 2;
+}
+.pickup-header .header-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+/* Back button, logo, menu */
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #102542;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-img {
+  height: 28px;
+  width: auto;
+}
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #102542;
+}
+.menu-btn {
+  font-size: 1.6rem;
+  color: #102542;
+  cursor: pointer;
+}
+
+/* OVERLAY CARD */
+main {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.pickup-card {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 80px; /* adjust if your footer height differs */
+  background: #EFF8FF;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  z-index: 2;
+}
+main {
+  margin-top: 3%; /* reduce space below header */
+
+  margin-bottom: 100%;
+
+}
+/* Summary box */
+#summary-box {
+  margin: 8px 16px;
+}
+/* Box header styling (assuming buslist.css has .box-header) */
+#summary-box .box-header {
+  background: #D4ECFF;
+  padding: 15px 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #102542;
+}
+/* Box body rows */
+.summary-row {
+
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 10px;
+  border-bottom: 1px solid #B0D9FF;
+}
+.summary-row:last-child {
+  border-bottom: none;
+}
+.summary-label {
+  font-weight: 500;
+  color: #102542;
+}
+.summary-value {
+  font-weight: 600;
+  color: #FF6B00;
+}
+
+/* Notice box (reuse or similar to existing .notice-box) */
+.notice-box {
+  margin: 40px 20px;
+  background: #0074CE;
+  border-radius: 12px;
+  padding: 16px;
+}
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.notice-icon {
+  font-size: 1.25rem;
+}
+.notice-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.notice-content p {
+  font-size: 0.9rem;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 16px;
+}
+.btn-primary, .btn-secondary {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: #FF6B00;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: #A92C1C;
+}
+.btn-secondary {
+  background: #ffffff;
+  border: 2px solid #FF6B00;
+  color: #FF6B00;
+}
+.btn-secondary:hover {
+  background: #FF6B00;
+  color: #ffffff;
+}
+
+/* Adjust back button margin if needed */
+.header-banner .header-content {
+  padding: 8px 16px;
+}
+/* Ensure footer nav not overlapping content */
+/* footer {
+  padding-top: 8px;
+} */
+
+/* Footer positioning */
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: 2;
+}
+/* Remove extra main margin if buslist.css sets one */
+main { margin-bottom: 0; }

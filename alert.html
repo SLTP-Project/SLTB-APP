@@ -1,0 +1,82 @@
+<!-- alert.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SLTB e-seat – Alerts</title>
+  <link rel="stylesheet" href="css/buslist.css" />
+  <link rel="stylesheet" href="css/alert.css" />
+</head>
+<body>
+  <!-- NAVIGATION DRAWER -->
+  <div id="nav-drawer" class="nav-drawer">
+    <ul class="nav-list">
+      <li class="nav-item"><a href="home.html">Home</a></li>
+      <li class="nav-item"><a href="journey.html">Journey</a></li>
+      <li class="nav-item"><a href="#">Alert</a></li>
+      <li class="nav-item"><a href="account.html">Account</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-banner">
+    <img src="images/bgimage.png" alt="Background map" class="banner-bg"/>
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="images/logo.png" alt="SLTB logo" class="logo-img"/>
+        <span class="logo-text">SLTB <span style="color:#006afd"><b>e‑seat</b></span></span>
+      </div>
+      <div id="menu-btn" class="menu-btn">&#9776;</div>
+    </div>
+  </header>
+
+  <!-- MAIN: Notification list -->
+  <main>
+    <div class="box box-2" id="alerts-box">
+      <div class="box-header">
+        <span>Notifications</span>
+      </div>
+      <div class="box-body" id="alerts-body">
+        <!-- JS will populate notifications here -->
+        <p id="no-alerts-msg" style="text-align:center; color:#555; display:none;">
+          No notifications.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER + BOTTOM NAV -->
+  <footer>
+    <div class="footer-actions">
+      <button class="chat-btn">
+        <img src="images/4.png" class="whatsapp-icon" alt="WhatsApp" /> Need help ?
+      </button>
+      <button class="call-btn">
+        <img src="images/5.png" class="whatsapp-icon" alt="Call" /> Call us – 1315
+      </button>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item-bottom" onclick="location.href='home.html'">
+        <img src="images/h1.png" class="nav-icon-bottom" alt="Home" />
+        <span>Home</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='journey.html'">
+        <img src="images/j.png" class="nav-icon-bottom" alt="Journey" />
+        <span>Journey</span>
+      </div>
+      <div class="nav-item-bottom active" onclick="location.href='alert.html'">
+        <img src="images/al1.png" class="nav-icon-bottom" alt="Alert" />
+        <span>Alert</span>
+      </div>
+      <div class="nav-item-bottom" onclick="location.href='account.html'">
+        <img src="images/ac.png" class="nav-icon-bottom" alt="Account" />
+        <span>Account</span>
+      </div>
+    </nav>
+  </footer>
+
+  <!-- Firebase & alert.js -->
+  <script type="module" src="js/alert.js"></script>
+</body>
+</html>

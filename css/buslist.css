@@ -1,0 +1,412 @@
+/* buslist.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RESET + BASE STYLES
+───────────────────────────────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f8f9fc;
+  color: #102542;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HEADER + BANNER
+───────────────────────────────────────────────────────────────────────── */
+.header-banner {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.header-content {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+/* “Go Back” Button */
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem; /* match hamburger size */
+  color: #102542;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Centered Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-img {
+  height: 28px;
+  width: auto;
+}
+.logo-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #102542;
+}
+
+/* Hamburger Menu */
+.menu-btn {
+  font-size: 1.6rem;
+  color: #102542;
+  cursor: pointer;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   NAVIGATION DRAWER (SLIDE‐IN)
+───────────────────────────────────────────────────────────────────────── */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  right: -240px;
+  width: 240px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  transition: right 0.25s ease-in-out;
+  z-index: 10;
+}
+
+.nav-drawer.open {
+  right: 0;
+}
+
+.nav-list {
+  list-style: none;
+  margin-top: 60px;
+}
+
+.nav-list .nav-item {
+  padding: 14px 20px;
+  font-size: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.nav-list .nav-item a {
+  text-decoration: none;
+  color: #102542;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MAIN CONTENT (FIVE BOXES)
+───────────────────────────────────────────────────────────────────────── */
+main {
+  margin-top: -140px;
+  position: relative;
+  padding: 0 16px;
+}
+
+/* Base box styling (all boxes) */
+.box {
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 2px solid rgba(158, 212, 255, 0.30);
+  overflow: hidden;
+}
+
+/* ─── BOX 1: White @60% opacity ─────────────────────────────────────────── */
+.box-1 {
+  background: rgba(255, 255, 255, 0.6);
+}
+.box-1 .box-content {
+  padding: 12px 16px;
+}
+.box-1 .line1 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #102542;
+  margin-bottom: 6px;
+}
+.box-1 .line2 {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ─── BOX 2–5: Light blue background, rounded, header area blue ───────── */
+.box-2, .box-3, .box-4, .box-5 {
+  background: #E2F3FF;
+  border-radius: 20px;
+  position: relative;
+}
+.box-2 .box-header, .box-3 .box-header, .box-4 .box-header, .box-5 .box-header {
+  background: #D4ECFF;
+  color: #434343;
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+}
+.box-2 .box-body, .box-3 .box-body, .box-4 .box-body, .box-5 .box-body {
+  background: #EFF8FF;
+  padding: 12px 16px;
+  color: #102542;
+  font-size: 0.95rem;
+}
+
+/* Stops row: each stop name above its dot, centered */
+.stops-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.stops-row .stop {
+  flex: 1;
+  text-align: center; /* center above dot */
+  font-size: 1rem;
+  font-weight: 400;
+  color: #102542;
+}
+
+/* Timeline container */
+.timeline {
+  position: relative;
+  height: 32px; /* space for icon + dot */
+  margin-bottom: 8px;
+    position: relative;
+    left: 6%;
+    right: 8%;
+  width: 85%;
+}
+
+/* Full black line */
+.timeline-line {
+  position: absolute;
+  top: 22px; /* aligns under dot center */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #102542;
+  z-index: 0;
+}
+
+/* Active (orange) segment: inline style left/width set by JS */
+.timeline-active-line {
+  position: absolute;
+  top: 22px;
+  height: 2px;
+  background: #ff6b00;
+  z-index: 1;
+}
+
+/* Dots container: flex to distribute evenly */
+.timeline-dots {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  
+  width: 100%;
+  height: 32px;
+  z-index: 2;
+}
+
+/* Each dot container holds optional icon and the dot itself */
+.dot-container {
+  position: relative;
+  width: 12px;
+  height: 32px;
+}
+
+/* Icon above dot: centered horizontally */
+.timeline-icon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* Dot circle */
+.dot {
+  position: absolute;
+  top: 16px; /* halfway down container */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #102542; /* default black; JS may override inline to orange */
+}
+
+/* Times & Dates row */
+.times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  margin-bottom: 18px;
+}
+.time-item {
+  flex: 1;
+  text-align: center; /* center below dot */
+  font-size: 0.85rem;
+  color: #102542;
+}
+.time-item .time {
+  /* inherits color/font */
+}
+.time-item .date {
+  /* inherits color/font */
+}
+
+/* “view all stops and times >>” */
+.view-all {
+  text-align: center;
+  color: #ff6b00;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(158, 212, 255, 0.30);
+  margin-bottom: 12px;
+}
+
+/* Fare */
+.fare {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003b8b;
+  margin-bottom: 8px;
+}
+
+/* Availability */
+.availability {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+/* “BOOK SEAT” button */
+.btn-book {
+  width: calc(100% - 32px);
+  background: #ff6b00;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 6px 16px 6px 16px;
+  transition: background 0.2s;
+}
+.btn-book:hover {
+  background: #A92C1C;
+}
+
+/* “Sold Out” button */
+.btn-soldout {
+  width: calc(100% - 32px);
+  background: #A1A1A1;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: default;
+  margin: 6px 16px 6px 16px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FOOTER + BOTTOM NAVIGATION (same as home page)
+───────────────────────────────────────────────────────────────────────── */
+footer {
+  margin-top: 20px;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 20px;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+}
+
+.chat-btn,
+.call-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: #00294A;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.whatsapp-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  background: #ffffff;
+  border-top: 1px solid #ccc;
+}
+
+.nav-item-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #555;
+  cursor: pointer;
+}
+
+.nav-item-bottom.active {
+  color: #003b8b;
+  font-weight: bold;
+}
+
+.nav-icon-bottom {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
