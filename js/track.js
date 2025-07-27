@@ -223,6 +223,7 @@
 
 // window.onload = initMap;
 
+// js/track.js
 import { db } from './firebaseConfig.js';
 import {
   doc,
@@ -231,30 +232,25 @@ import {
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-// ————————————— Unique per‑device ID —————————————
+let map, userMarker, liveUserMarker;
+let busRouteRenderer, userToPickupLine, liveLineToDrop;
+let fromLoc, toLoc;
+
+// ————————————— Unique per-device ID —————————————
 let clientId = localStorage.getItem('clientId');
 if (!clientId) {
   clientId = '_' + Math.random().toString(36).substr(2, 9);
   localStorage.setItem('clientId', clientId);
 }
 
-let map,
-    userMarker,
-    liveUserMarker,
-    busRouteRenderer,
-    userToPickupLine,
-    liveLineToDrop,
-    fromLoc,
-    toLoc,
-    childWatchId = null;
-
+// V‑Code from URL
 const urlParams = new URLSearchParams(window.location.search);
-const vcode     = urlParams.get('vcode');
+const vcode = urlParams.get('vcode');
 
-const startBtn  = document.getElementById('btn-start-journey');
-
-// ————————————— “Start My Journey” button —————————————
-startBtn.addEventListener('click', async () => {
+// “Start My Journey” button (child broadcasts)
+let childWatchId = null;
+const startBtn = document.getElementById('btn-start-journey');
+startBtn?.addEventListener('click', async () => {
   if (!navigator.geolocation) return alert('Geolocation not supported.');
 
   if (childWatchId !== null) {
@@ -263,59 +259,44 @@ startBtn.addEventListener('click', async () => {
     childWatchId = null;
     startBtn.textContent = 'Start My Journey';
   } else {
-    // claim tracker role
+    // claim tracker role in Firestore
     await updateDoc(doc(db, 'confirmedBookings', vcode), {
       trackerId: clientId
     });
-
-    // start broadcasting location
+    // begin broadcasting location
     childWatchId = navigator.geolocation.watchPosition(async pos => {
       const { latitude, longitude } = pos.coords;
       await updateDoc(doc(db, 'confirmedBookings', vcode), {
-        livePosition: {
-          lat:       latitude,
-          lng:       longitude,
-          timestamp: Date.now()
-        }
+        livePosition: { lat: latitude, lng: longitude, timestamp: Date.now() }
       });
-    }, err => console.warn(err), {
-      enableHighAccuracy: true
-    });
-
+    }, err => console.warn(err), { enableHighAccuracy: true });
     startBtn.textContent = 'Stop My Journey';
   }
 });
 
+// Initialize map and decide mode
 async function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom:               12,
-    center:             { lat: 7.8731, lng: 80.7718 },
-    fullscreenControl:  false,
-    streetViewControl:  false
+    zoom: 12,
+    center: { lat: 7.8731, lng: 80.7718 },
+    fullscreenControl: false,
+    streetViewControl: false
   });
 
-  if (!vcode) {
-    alert("No V‑Code provided.");
-    return;
-  }
-
+  if (!vcode) return alert("No V‑Code provided.");
   const snap = await getDoc(doc(db, 'confirmedBookings', vcode));
-  if (!snap.exists()) {
-    alert("Booking not found.");
-    return;
-  }
-
+  if (!snap.exists()) return alert("Booking not found.");
   const booking = snap.data();
 
-  // —————— VIEWER vs. TRACKER ——————
+  // —————— VIEWER vs. TRACKER mode ——————
   if (booking.trackerId && booking.trackerId !== clientId) {
-    // hide child buttons on viewer’s device
+    // viewer: hide child controls
     document.getElementById('btn-start-journey').style.display = 'none';
-    document.getElementById('btn-track-live').style.display    = 'none';
+    document.getElementById('btn-track-live')?.style.display    = 'none';
 
-    // subscribe to livePosition updates
-    onSnapshot(doc(db, 'confirmedBookings', vcode), snap => {
-      const data = snap.data();
+    // subscribe to the broadcaster’s livePosition
+    onSnapshot(doc(db, 'confirmedBookings', vcode), docSnap => {
+      const data = docSnap.data();
       if (data.livePosition) {
         const { lat, lng } = data.livePosition;
         const pos = { lat, lng };
@@ -325,12 +306,12 @@ async function initMap() {
             position: pos,
             title: "Tracked Device",
             icon: {
-              path:       google.maps.SymbolPath.CIRCLE,
-              scale:      8,
-              fillColor:  '#006afd',
-              fillOpacity:0.9,
-              strokeColor:'#fff',
-              strokeWeight:2
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: '#006afd',
+              fillOpacity: 0.9,
+              strokeColor: '#fff',
+              strokeWeight: 2
             }
           });
         } else {
@@ -338,16 +319,14 @@ async function initMap() {
         }
       }
     });
-
-    // do not run any further child‑mode setup
-    return;
+    return; // skip the rest—no self‑tracking
   }
 
-  // —————— CHILD MODE — continue with route & user‑tracking setup ——————
+  // —————— TRACKER mode (or first load) ——————
   const { from, to, route } = booking;
   document.getElementById('header-info').textContent = `Bus #${route} • ${from} → ${to}`;
 
-  // geocode stops
+  // geocode stops & draw route
   const geocoder = new google.maps.Geocoder();
   [fromLoc, toLoc] = await Promise.all(
     ['from','to'].map(key =>
@@ -357,12 +336,9 @@ async function initMap() {
       ))
     )
   );
-  if (!fromLoc || !toLoc) {
-    alert("Couldn’t geocode stops.");
-    return;
-  }
+  if (!fromLoc || !toLoc) return alert("Couldn’t geocode stops.");
 
-  // place pickup/drop markers
+  // place fixed markers
   const iconOpts = size => ({
     url: size === 'from' ? 'images/f.png' : 'images/t.png',
     scaledSize: new google.maps.Size(32, 32)
@@ -376,31 +352,31 @@ async function initMap() {
   map.fitBounds(bounds, 100);
   document.getElementById('info-bar').textContent = `${from} → ${to}`;
 
-  // draw route polyline
+  // draw bus route polyline
   const directionsService = new google.maps.DirectionsService();
   busRouteRenderer = new google.maps.DirectionsRenderer({
     map,
-    suppressMarkers:  true,
+    suppressMarkers: true,
     polylineOptions: { strokeColor: '#ff6b00', strokeWeight: 6 }
   });
   directionsService.route({
-    origin:      fromLoc,
+    origin: fromLoc,
     destination: toLoc,
-    travelMode:  google.maps.TravelMode.DRIVING
+    travelMode: google.maps.TravelMode.DRIVING
   }, (res, status) => {
     if (status === 'OK') busRouteRenderer.setDirections(res);
   });
 
-  // live “you → pickup” line
+  // draw line from user → pickup
   userToPickupLine = new google.maps.Polyline({
     map,
-    strokeColor:   '#ff6b00',
+    strokeColor: '#ff6b00',
     strokeOpacity: 0.8,
-    strokeWeight:  4,
-    path:          []
+    strokeWeight: 4,
+    path: []
   });
 
-  // watch user’s location and draw userMarker + line
+  // continuously update “You are here” marker
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(pos => {
       const latlng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -410,12 +386,12 @@ async function initMap() {
           map,
           title: "You are here",
           icon: {
-            path:        google.maps.SymbolPath.CIRCLE,
-            scale:       8,
-            fillColor:   '#ff6b00',
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#ff6b00',
             fillOpacity: 0.9,
             strokeColor: '#fff',
-            strokeWeight:2
+            strokeWeight: 2
           }
         });
       } else {
@@ -424,36 +400,68 @@ async function initMap() {
       userToPickupLine.setPath([latlng, fromLoc]);
     }, err => console.warn(err), {
       enableHighAccuracy: true,
-      maximumAge:         0,
-      timeout:            5000
+      maximumAge: 0,
+      timeout: 5000
     });
   }
 
-  // center‑map button (if you have one)
+  // recenter control (if you have one)
   document.getElementById('btn-center')?.addEventListener('click', () => {
     if (userMarker) map.panTo(userMarker.getPosition());
   });
 
-  // one‑time “Track My Live Location” button (unchanged)
-  document.getElementById('btn-track-live').addEventListener('click', () => {
-    if (!navigator.geolocation) {
-      return alert("Unable to get live location");
-    }
+  // existing “Track My Live Location” button logic
+  document.getElementById('btn-track-live')?.addEventListener('click', () => {
+    if (!navigator.geolocation) return alert("Geolocation not supported.");
+
     navigator.geolocation.getCurrentPosition(pos => {
-      // same code you already have…
+      const userPos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      if (!liveUserMarker) {
+        liveUserMarker = new google.maps.Marker({
+          map,
+          position: userPos,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: '#d50000',
+            fillOpacity: 1,
+            strokeColor: '#fff',
+            strokeWeight: 2
+          },
+          title: "Live You"
+        });
+      } else {
+        liveUserMarker.setPosition(userPos);
+      }
+      // red line to drop
+      if (!liveLineToDrop) {
+        liveLineToDrop = new google.maps.Polyline({
+          map,
+          strokeColor: '#d50000',
+          strokeOpacity: 0.8,
+          strokeWeight: 4,
+          path: [userPos, toLoc]
+        });
+      } else {
+        liveLineToDrop.setPath([userPos, toLoc]);
+      }
+      const distKm = google.maps.geometry.spherical.computeDistanceBetween(userPos, toLoc) / 1000;
+      alert(`Distance to drop: ${distKm.toFixed(2)} km`);
+      map.panTo(userPos);
     }, err => {
       alert("Unable to get live location");
       console.warn(err);
     }, {
       enableHighAccuracy: true,
-      timeout:            7000
+      timeout: 7000
     });
   });
 }
 
 // back button
-document.getElementById('back-btn').addEventListener('click', () => {
+document.getElementById('back-btn')?.addEventListener('click', () => {
   window.location.href = 'journey.html';
 });
 
+// launch!
 window.onload = initMap;
