@@ -1,128 +1,31 @@
-// import { db } from './firebaseConfig.js';
-// import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
-// let map, userMarker;
-// let busRouteRenderer, userToPickupLine;
-// const urlParams = new URLSearchParams(window.location.search);
-// const vcode = urlParams.get('vcode');
-
-// async function initMap() {
-//   // 1. Initialize map
-//   map = new google.maps.Map(document.getElementById('map'), {
-//     zoom: 12,
-//     center: { lat: 7.8731, lng: 80.7718 },
-//     fullscreenControl: false,
-//     streetViewControl: false
-//   });
-
-//   // 2. Fetch booking data
-//   if (!vcode) return alert("No V‑Code provided.");
-//   const snap = await getDoc(doc(db, 'confirmedBookings', vcode));
-//   if (!snap.exists()) return alert("Booking not found.");
-//   const { from, to, route } = snap.data();
-//   document.getElementById('header-info')
-//           .textContent = `Bus #${route}  •  ${from} → ${to}`;
-
-//   // 3. Geocode stops
-//   const geocoder = new google.maps.Geocoder();
-//   const [fromLoc, toLoc] = await Promise.all(['from','to'].map(key =>
-//     new Promise(res => geocoder.geocode({ address: snap.data()[key] }, (r,s) =>
-//       res(s==='OK' ? r[0].geometry.location : null)
-//     ))
-//   ));
-//   if (!fromLoc || !toLoc) return alert("Couldn’t geocode stops.");
-
-//   // 4. Place pickup/drop markers with smaller icons
-//   const iconOpts = size => ({
-//     url: size === 'from' ? 'images/f.png' : 'images/t.png',
-//     scaledSize: new google.maps.Size(32, 32)
-//   });
-//   new google.maps.Marker({ map, position: fromLoc, icon: iconOpts('from'), title: 'Pickup' });
-//   new google.maps.Marker({ map, position: toLoc,   icon: iconOpts('to'),   title: 'Drop'   });
-
-//   // 5. Fit bounds and update info‑bar
-//   const bounds = new google.maps.LatLngBounds();
-//   [fromLoc, toLoc].forEach(p => bounds.extend(p));
-//   map.fitBounds(bounds, 100);
-//   document.getElementById('info-bar').textContent = `${from} → ${to}`;
-
-//   // 6. Draw bus route in orange
-//   const directionsService = new google.maps.DirectionsService();
-//   busRouteRenderer = new google.maps.DirectionsRenderer({
-//     map,
-//     suppressMarkers: true,
-//     polylineOptions: { strokeColor: '#ff6b00', strokeWeight: 6 }
-//   });
-//   directionsService.route({
-//     origin: fromLoc,
-//     destination: toLoc,
-//     travelMode: google.maps.TravelMode.DRIVING
-//   }, (res, status) => {
-//     if (status === 'OK') busRouteRenderer.setDirections(res);
-//   });
-
-//   // 7. Prepare live line (user → pickup)
-//   userToPickupLine = new google.maps.Polyline({
-//     map,
-//     strokeColor: '#ff6b00',
-//     strokeOpacity: 0.8,
-//     strokeWeight: 4,
-//     path: []
-//   });
-
-//   // 8. Watch user position
-//   if (navigator.geolocation) {
-//     navigator.geolocation.watchPosition(pos => {
-//       const latlng = {
-//         lat: pos.coords.latitude,
-//         lng: pos.coords.longitude
-//       };
-//       if (!userMarker) {
-//         userMarker = new google.maps.Marker({
-//           position: latlng,
-//           map,
-//           title: "You are here",
-//           icon: {
-//             path: google.maps.SymbolPath.CIRCLE,
-//             scale: 8,
-//             fillColor: '#ff6b00',
-//             fillOpacity: 0.9,
-//             strokeColor: '#fff',
-//             strokeWeight: 2
-//           }
-//         });
-//       } else {
-//         userMarker.setPosition(latlng);
-//       }
-//       userToPickupLine.setPath([latlng, fromLoc]);
-//     }, err => console.warn(err), {
-//       enableHighAccuracy: true,
-//       maximumAge: 0,
-//       timeout: 5000
-//     });
-//   }
-
-//   // 9. Center button
-//   document.getElementById('btn-center').addEventListener('click', () => {
-//     if (userMarker) map.panTo(userMarker.getPosition());
-//   });
-// }
-
-// // 10. Back button
-// document.getElementById('back-btn').addEventListener('click', () => {
-//   window.location.href = 'journey.html';
-// });
-
-// // Initialize on load
-// window.onload = initMap;
-
-
 import { db } from './firebaseConfig.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 let map, userMarker, liveUserMarker;
 let busRouteRenderer, userToPickupLine, liveLineToDrop;
 let fromLoc, toLoc;
+
+let childWatchId = null;
+const startBtn = document.getElementById('btn-start-journey');
+
+startBtn.addEventListener('click', () => {
+  if (!navigator.geolocation) return alert('Geolocation not supported.');
+  // Toggle on/off
+  if (childWatchId !== null) {
+    navigator.geolocation.clearWatch(childWatchId);
+    childWatchId = null;
+    startBtn.textContent = 'Start My Journey';
+  } else {
+    childWatchId = navigator.geolocation.watchPosition(async pos => {
+      const { latitude, longitude } = pos.coords;
+      // push into Firestore under confirmedBookings/{vcode}.livePosition
+      await updateDoc(doc(db, 'confirmedBookings', vcode), {
+        livePosition: { lat: latitude, lng: longitude, timestamp: Date.now() }
+      });
+    }, err => console.warn(err), { enableHighAccuracy: true });
+    startBtn.textContent = 'Stop My Journey';
+  }
+});
 
 const urlParams = new URLSearchParams(window.location.search);
 const vcode = urlParams.get('vcode');

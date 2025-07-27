@@ -40,7 +40,8 @@ trackBtn.addEventListener("click", async () => {
     return vcodeError.textContent = "V‑Code not found. Please check.";
   }
   // success → open tracker
-  window.open(`track.html?vcode=${encodeURIComponent(v)}`, "_blank");
+  window.location.href = `track.html?vcode=${encodeURIComponent(v)}`;
+
 });
 
 // → Load last 4 bookings
