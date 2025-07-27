@@ -38,6 +38,12 @@
   background: #EFF8FF;
   padding: 0 16px 16px;
 }
+.box-1 .box-body1 {
+  background: #EFF8FF;
+  padding-top: 4% ;
+  padding-bottom: 1%;
+
+}
 
 .form-group {
   margin-top: 12px;
