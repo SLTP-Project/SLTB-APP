@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (availEl && availabilityPrefix) {
       let availText = availabilityPrefix;
       if (availabilityPrefix.includes("Closing")) {
-        availText += `${formatDateShort(baseDate)}, 18:00`;
+        availText += `${formatDateShort(baseDate)}, 02:04`;
       }
       availEl.textContent = availText;
     }

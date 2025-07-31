@@ -51,11 +51,12 @@ btn.addEventListener('click', async () => {
 
   try {
     await signInWithEmailAndPassword(auth, email, pw);
-    // Show success then auto‑redirect
-    successModal.style.display = 'flex';
-    setTimeout(() => {
-      window.location.href = 'home.html';
-    }, 1000);
+    // // Show success then auto‑redirect
+    // successModal.style.display = 'flex';
+    // setTimeout(() => {
+    //   window.location.href = 'home.html';
+    // }, 1000);
+    window.location.href = 'home.html';
   } catch (err) {
   console.error('Firebase auth failed:', err);
 

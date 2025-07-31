@@ -172,6 +172,7 @@
 }
 .cvv-icon {
   width: 38px;
+  margin-right: 10px;
   height: auto;
   object-fit: contain;
   cursor: pointer;

@@ -63,6 +63,7 @@ function formatDateShort(d) {
 
 // On load: read pendingBooking and populate Box 1 (#route-box-body)
 document.addEventListener("DOMContentLoaded", () => {
+  
   const pendingStr = localStorage.getItem("pendingBooking");
   if (!pendingStr) {
     console.warn("No pendingBooking found; redirecting to select seat.");
@@ -102,13 +103,21 @@ document.addEventListener("DOMContentLoaded", () => {
     "202": ["20:00","21:00","04:00"],
     // Add corresponding times arrays
   };
+  // const fareMap = {
+  //   "02": "1500 LKR / seat",
+  //   "20": "1500 LKR / seat",
+  //   "222": "1500 LKR / seat",
+  //   "202": "1500 LKR / seat",
+  //   // Add fare per route if different
+  // };
   const fareMap = {
-    "02": "1500 LKR / seat",
-    "20": "1500 LKR / seat",
-    "222": "1500 LKR / seat",
-    "202": "1500 LKR / seat",
-    // Add fare per route if different
-  };
+  "02": 1376,
+  "20": 1376,
+  "222": 1376,
+  "202": 1376,
+  // … all values here are “LKR per seat” as Numbers
+};
+
   const availabilityMap = {
     "02": 40,
     "20": 9,
@@ -358,6 +367,29 @@ document.addEventListener("DOMContentLoaded", () => {
     routeBoxBody.appendChild(seatInfoDiv);
   }
   // ----- End of Box 1 rendering -----
+
+   (function() {
+    // number of seats booked
+    const seatCount = seats.length;
+    // per-seat fare (from your numeric fareMap)
+    const perSeatFare = fareMap[route] || 0;
+    // total bus fare
+    const totalBusFare = perSeatFare * seatCount;
+
+    // grab existing convenience & bank charges
+    const convEl    = document.getElementById('fare-conv');
+    const bankEl    = document.getElementById('fare-bank');
+    const convFee   = parseFloat(convEl.textContent.replace(/,/g, '')) || 0;
+    const bankCharge = parseFloat(bankEl.textContent.replace(/,/g, '')) || 0;
+
+    // update the DOM
+    document.getElementById('fare-bus').textContent =
+      totalBusFare.toLocaleString('en-LK', { minimumFractionDigits: 2 });
+    const grandTotal = totalBusFare + convFee + bankCharge;
+    document.getElementById('fare-total').textContent =
+      grandTotal.toLocaleString('en-LK', { minimumFractionDigits: 2 });
+  })();
+
 });
 
 /**

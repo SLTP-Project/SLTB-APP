@@ -50,7 +50,8 @@
 .see-journey-btn {
   display:block;
   width:calc(100% - 32px);
-  margin:0 auto 8px;
+  margin:0 auto 16px;
+  gap: 8px; 
   background:#FF6B00; color:#fff;
   border:none; border-radius:8px;
   padding:14px 0; font-size:1rem; font-weight:600;
@@ -61,8 +62,9 @@
 /* Secondary button */
 .skip-btn {
   display:block;
+  gap: 8px; 
   width:calc(100% - 32px);
-  margin:0 auto 24px;
+  margin:0 auto 16px;
   background:#fff; color:#FF6B00;
   border:2px solid #FF6B00; border-radius:8px;
   padding:14px 0; font-size:1rem; font-weight:600;
@@ -88,21 +90,32 @@
 
 .download-btn {
   display:block;
+  gap: 8px; 
   width:calc(100% - 32px);
   margin:0 auto 8px;
-  background:#0056b3; color:#fff;
-  border:none; border-radius:8px;
+  background:#fff; color: #004EA8;
+  border-radius:8px;
+  border-color: #004EA8;
+  padding-top: -1000px;
   padding:14px 0; font-size:1rem; font-weight:600;
   cursor:pointer; transition:background .2s;
 }
 .download-btn:hover {
-  background-color: #FF6B00;
+  background:#004EA8; color:#fff;
 }
 
 
 /* Prevent overlap with footer */
 main { margin-bottom:60px; 
 margin-bottom: 20px;
+}
+
+.btn-icon3 {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 5px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 
