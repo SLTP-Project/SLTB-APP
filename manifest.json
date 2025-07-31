@@ -1,0 +1,21 @@
+{
+  "name": "SLTB e-seat",
+  "short_name": "e-seat",
+  "description": "Book & track SLTB buses on your phone",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#006afd",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

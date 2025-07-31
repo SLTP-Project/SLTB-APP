@@ -4,9 +4,20 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+  <!-- Tell mobile browsers we want standalone (no URL bar) -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#006afd">
+
+<!-- Hook up the PWA manifest -->
+<link rel="manifest" href="/manifest.json">
+
+
   <title>SLTB e-seat – Login</title>
   <link rel="stylesheet" href="css/auth.css"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
 
 </head>
 <body>
@@ -50,7 +61,14 @@
     </div>
   </div>
 
-  
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .catch(err => console.warn('SW registration failed:', err));
+  }
+</script>
   <script type="module" src="js/login.js"></script>
 </body>
 </html>
+
+<!-- THIS IS FOR TESTING -->
