@@ -1,22 +1,22 @@
 /* Container */
 main { margin-top: -120px; margin-bottom: 35%; }
-#alerts-box { margin: 8px 16px; }
+#alerts-box { margin: 0px 0px; }
 #alerts-box .box-header {
-  background: #D4ECFF; padding: 8px 12px; font-size: 1.1rem; font-weight: 600;
+  background: #D4ECFF; padding: 10px 12px; font-size: 1.1rem; font-weight: 600;
   color: #102542; display: flex; justify-content: space-between; align-items: center;
 }
-.header-actions { display: flex; gap: 8px; }
+.header-actions { display: flex; gap: 12px; justify-content: space-between;  }
 .delete-toggle-btn, .clear-all-btn {
   background: #FF6B00; color: #fff; border: none; padding: 6px 12px; border-radius: 6px;
-  font-size: 0.85rem; cursor: pointer;
+  font-size: 0.85rem; cursor: pointer; 
 }
 .delete-toggle-btn:hover, .clear-all-btn:hover { background: #d95c00; }
 #alerts-box .box-body { padding: 20px 12px; }
 
 /* Each alert item */
 .alert-item {
-  border: 2px solid #B0D9FF; background: #f3f9ff; padding: 14px 16px;
-  border-radius: 12px; margin-bottom: 12px; position: relative;
+  border: 2px solid #B0D9FF; background: #f3f9ff; padding: 8px 16px;
+  border-radius: 12px; margin-bottom: 10px; position: relative;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s ease;
 }
 .alert-item:hover { transform: translateY(-2px); }
@@ -27,7 +27,7 @@ main { margin-top: -120px; margin-bottom: 35%; }
 .alert-checkbox {
   position: absolute; top: 8px; right: 8px; display: none; transform: scale(1.2);
 }
-.delete-mode .alert-checkbox { display: block; }
+.delete-mode .alert-checkbox { display: block; transition: transform 0.2s ease; }
 
 /* Popup */
 .popup-overlay {
@@ -54,3 +54,38 @@ main { margin-top: -120px; margin-bottom: 35%; }
   margin-right: 20%;
 }
 .confirm-btn:hover { background: #d95c00; }
+
+/* wrap text + copy button */
+.alert-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+/* highlight the actual code */
+.vcode-span {
+  font-weight: 600;
+  background: #B0D9FF;
+  padding: 2px 6px;
+  color: black;
+  margin-top: 20px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* copy button styling */
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+    margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 2px;
+}
+.copy-btn:hover {
+  transform: scale(1.5);
+}
+.copy-btn:active {
+  transform: scale(2);
+}

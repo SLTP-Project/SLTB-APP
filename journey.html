@@ -2,10 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF‑8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>SLTB e‑seat – Active Journeys</title>
+  <title>SLTB e-seat – Active Journeys</title>
   <!-- Global styles (header/footer/nav) -->
   <!-- Page-specific -->
   <link rel="stylesheet" href="css/journey.css" />
@@ -27,7 +26,7 @@
     <div class="header-content">
       <div class="logo-container">
         <img src="images/logo.png" class="logo-img" alt="SLTB"/>
-        <span class="logo-text">SLTB <b style="color:#006afd">e‑seat</b></span>
+        <span class="logo-text">SLTB <b style="color:#006afd">e-seat</b></span>
       </div>
       <div id="menu-btn" class="menu-btn">&#9776;</div>
     </div>
@@ -37,11 +36,15 @@
     <!-- PAGE TITLE -->
     <h1 class="page-title">Active journeys</h1>
 
-    <!-- TRACK BY V‑CODE -->
+    <!-- TRACK BY V-CODE -->
     <section class="vcode-card">
-      <label for="vcode-input">Enter your V‑Code:</label>
-      <input type="text" id="vcode-input" placeholder="e.g. AbCd1234"/>
-      <button id="track-journey-btn" class="btn-outline" >TRACK JOURNEY</button>
+      <label for="vcode-input">Enter your V-Code:</label>
+      <div class="vcode-input-wrap">
+        <input type="text" id="vcode-input" placeholder="e.g. AbCd1234"/>
+        <!-- PASTE BUTTON -->
+        <button id="paste-vcode-btn" class="paste-btn" title="Paste from clipboard">📋</button>
+      </div>
+      <button id="track-journey-btn" class="btn-outline">TRACK JOURNEY</button>
       <p id="vcode-error" class="vcode-error"></p>
     </section>
 

@@ -16,6 +16,7 @@ const vcodeInput = document.getElementById("vcode-input");
 const vcodeError = document.getElementById("vcode-error");
 const trackBtn = document.getElementById("track-journey-btn");
 const historyList = document.getElementById("history-list");
+const pasteBtn      = document.getElementById("paste-vcode-btn");
 
 // drawer
 menuBtn.addEventListener("click", () => navDrawer.classList.toggle("open"));
@@ -24,6 +25,16 @@ document.addEventListener("click", e => {
       !menuBtn.contains(e.target) &&
       navDrawer.classList.contains("open")) {
     navDrawer.classList.remove("open");
+  }
+});
+
+// — Paste-from-clipboard button logic —
+pasteBtn.addEventListener("click", async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    vcodeInput.value = text.trim();
+  } catch (err) {
+    console.error("Failed to read clipboard contents: ", err);
   }
 });
 

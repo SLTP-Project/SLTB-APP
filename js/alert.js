@@ -13,7 +13,7 @@ import {
 
 let deleteMode = false;
 
-// Custom confirmation popup (unchanged if you already have it)
+// Custom confirmation popup (unchanged)
 function showPopup(message, onConfirm) {
   const popup = document.getElementById("confirm-popup");
   const msg = document.getElementById("popup-message");
@@ -28,7 +28,7 @@ function showPopup(message, onConfirm) {
 async function loadNotifications(userId) {
   const alertsBody  = document.getElementById("alerts-body");
   const noAlertsMsg = document.getElementById("no-alerts-msg");
-    const sound       = document.getElementById("notif-sound");
+  const sound       = document.getElementById("notif-sound");
   alertsBody.innerHTML = "";
 
   try {
@@ -37,7 +37,6 @@ async function loadNotifications(userId) {
     const q = query(notifCol, where("userId", "==", userId));
     const snap = await getDocs(q);
 
-    // Filter: only show those whose timestamp ≤ now
     const docs = snap.docs
       .map(d => ({ id: d.id, ...d.data() }))
       .filter(n => n.timestamp?.toDate() <= now);
@@ -48,22 +47,65 @@ async function loadNotifications(userId) {
       return;
     }
     noAlertsMsg.style.display = "none";
-    // Render each notification
+
     docs.forEach(n => {
       const item = document.createElement("div");
       item.className = "alert-item";
       item.dataset.id = n.id;
 
+      // Checkbox for delete mode
       const cb = document.createElement("input");
       cb.type = "checkbox";
       cb.className = "alert-checkbox";
       item.appendChild(cb);
 
-      const text = document.createElement("div");
-      text.className = "alert-text";
-      text.textContent = n.message;
-      item.appendChild(text);
+      // Text + optional copy button
+      const textWrap = document.createElement("div");
+      textWrap.className = "alert-text-wrap";
 
+      // If this notification contains "v-code", split and highlight
+      const msg = n.message || "";
+      const codeMatch = msg.match(/v-code\s*[:\-]\s*([A-Za-z0-9]+)/i);
+
+      if (codeMatch) {
+        // part before code
+        const prefix = msg.split(codeMatch[0])[0] + codeMatch[0].split(codeMatch[1])[0];
+        const code = codeMatch[1];
+
+        const prefixSpan = document.createElement("span");
+        prefixSpan.textContent = prefix + " ";
+        textWrap.appendChild(prefixSpan);
+
+        const codeSpan = document.createElement("span");
+        codeSpan.className = "vcode-span";
+        codeSpan.textContent = code;
+        textWrap.appendChild(codeSpan);
+
+        // copy button
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "copy-btn";
+        copyBtn.title = "Copy v-code";
+        copyBtn.innerHTML = "📋"; // you can swap this for an <img> or font-icon
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(code)
+            .then(() => {
+              copyBtn.textContent = "✔️";
+              setTimeout(() => { copyBtn.textContent = "📋"; }, 1500);
+            })
+            .catch(err => console.error("Copy failed", err));
+        };
+        textWrap.appendChild(copyBtn);
+      } else {
+        // regular text
+        const text = document.createElement("div");
+        text.className = "alert-text";
+        text.textContent = msg;
+        textWrap.appendChild(text);
+      }
+
+      item.appendChild(textWrap);
+
+      // Timestamp
       const ts = document.createElement("div");
       ts.className = "alert-timestamp";
       ts.textContent = n.timestamp.toDate().toLocaleString();
@@ -72,20 +114,20 @@ async function loadNotifications(userId) {
       alertsBody.appendChild(item);
     });
 
-        // Play notification sound once
+    // Play notification sound once
     if (sound && typeof sound.play === "function") {
       sound.currentTime = 0;
       sound.play().catch(_=>{/* user gesture may be required */});
     }
   } catch (err) {
     console.error("Error loading notifications:", err);
-    const noAlertsMsg = document.getElementById("no-alerts-msg");
     noAlertsMsg.textContent = "Error loading notifications.";
     noAlertsMsg.style.display = "block";
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Drawer toggle (unchanged)
   const menuBtn = document.getElementById("menu-btn");
   const navDrawer = document.getElementById("nav-drawer");
   if (menuBtn) menuBtn.addEventListener("click", () => navDrawer.classList.toggle("open"));
@@ -94,17 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (navDrawer.classList.contains("open")) navDrawer.classList.remove("open");
   });
 
+  // Delete‐mode toggles (unchanged)
   const toggleBtn   = document.getElementById("toggle-delete-mode");
   const clearAllBtn = document.getElementById("clear-all-btn");
   const alertsBox   = document.getElementById("alerts-box");
 
-  // Cancel delete mode on outside click
   document.addEventListener("click", e => {
-    if (deleteMode &&
-        !alertsBox.contains(e.target) &&
-        !toggleBtn.contains(e.target) &&
-        !clearAllBtn.contains(e.target)
-    ) {
+    if (deleteMode && !alertsBox.contains(e.target) && !toggleBtn.contains(e.target) && !clearAllBtn.contains(e.target)) {
       deleteMode = false;
       alertsBox.classList.remove("delete-mode");
       clearAllBtn.style.display = "none";
@@ -112,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Toggle delete mode / delete selected
   toggleBtn.addEventListener("click", () => {
     deleteMode = !deleteMode;
     if (deleteMode) {
@@ -141,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Clear all visible
   clearAllBtn.addEventListener("click", () => {
     showPopup("Clear ALL notifications? This cannot be undone.", async () => {
       const boxes = document.querySelectorAll(".alert-checkbox");
@@ -163,6 +199,179 @@ document.addEventListener("DOMContentLoaded", () => {
     loadNotifications(user.uid);
   });
 });
+
+
+
+
+
+
+
+//old without copy v-code
+// // js/alert.js
+// import { auth } from './firebaseConfig.js';
+// import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+// import { db } from './firebaseConfig.js';
+// import {
+//   collection,
+//   query,
+//   where,
+//   getDocs,
+//   deleteDoc,
+//   doc
+// } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+// let deleteMode = false;
+
+// // Custom confirmation popup (unchanged if you already have it)
+// function showPopup(message, onConfirm) {
+//   const popup = document.getElementById("confirm-popup");
+//   const msg = document.getElementById("popup-message");
+//   const cancelBtn = document.getElementById("popup-cancel");
+//   const confirmBtn = document.getElementById("popup-confirm");
+//   msg.textContent = message;
+//   popup.style.display = "flex";
+//   cancelBtn.onclick = () => popup.style.display = "none";
+//   confirmBtn.onclick = () => { popup.style.display = "none"; onConfirm(); };
+// }
+
+// async function loadNotifications(userId) {
+//   const alertsBody  = document.getElementById("alerts-body");
+//   const noAlertsMsg = document.getElementById("no-alerts-msg");
+//     const sound       = document.getElementById("notif-sound");
+//   alertsBody.innerHTML = "";
+
+//   try {
+//     const now = new Date();
+//     const notifCol = collection(db, "notifications");
+//     const q = query(notifCol, where("userId", "==", userId));
+//     const snap = await getDocs(q);
+
+//     // Filter: only show those whose timestamp ≤ now
+//     const docs = snap.docs
+//       .map(d => ({ id: d.id, ...d.data() }))
+//       .filter(n => n.timestamp?.toDate() <= now);
+
+//     if (docs.length === 0) {
+//       noAlertsMsg.textContent = "No notifications.";
+//       noAlertsMsg.style.display = "block";
+//       return;
+//     }
+//     noAlertsMsg.style.display = "none";
+//     // Render each notification
+//     docs.forEach(n => {
+//       const item = document.createElement("div");
+//       item.className = "alert-item";
+//       item.dataset.id = n.id;
+
+//       const cb = document.createElement("input");
+//       cb.type = "checkbox";
+//       cb.className = "alert-checkbox";
+//       item.appendChild(cb);
+
+//       const text = document.createElement("div");
+//       text.className = "alert-text";
+//       text.textContent = n.message;
+//       item.appendChild(text);
+
+//       const ts = document.createElement("div");
+//       ts.className = "alert-timestamp";
+//       ts.textContent = n.timestamp.toDate().toLocaleString();
+//       item.appendChild(ts);
+
+//       alertsBody.appendChild(item);
+//     });
+
+//         // Play notification sound once
+//     if (sound && typeof sound.play === "function") {
+//       sound.currentTime = 0;
+//       sound.play().catch(_=>{/* user gesture may be required */});
+//     }
+//   } catch (err) {
+//     console.error("Error loading notifications:", err);
+//     const noAlertsMsg = document.getElementById("no-alerts-msg");
+//     noAlertsMsg.textContent = "Error loading notifications.";
+//     noAlertsMsg.style.display = "block";
+//   }
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const menuBtn = document.getElementById("menu-btn");
+//   const navDrawer = document.getElementById("nav-drawer");
+//   if (menuBtn) menuBtn.addEventListener("click", () => navDrawer.classList.toggle("open"));
+//   document.addEventListener("click", e => {
+//     if (navDrawer.contains(e.target) || menuBtn.contains(e.target)) return;
+//     if (navDrawer.classList.contains("open")) navDrawer.classList.remove("open");
+//   });
+
+//   const toggleBtn   = document.getElementById("toggle-delete-mode");
+//   const clearAllBtn = document.getElementById("clear-all-btn");
+//   const alertsBox   = document.getElementById("alerts-box");
+
+//   // Cancel delete mode on outside click
+//   document.addEventListener("click", e => {
+//     if (deleteMode &&
+//         !alertsBox.contains(e.target) &&
+//         !toggleBtn.contains(e.target) &&
+//         !clearAllBtn.contains(e.target)
+//     ) {
+//       deleteMode = false;
+//       alertsBox.classList.remove("delete-mode");
+//       clearAllBtn.style.display = "none";
+//       toggleBtn.textContent = "Delete";
+//     }
+//   });
+
+//   // Toggle delete mode / delete selected
+//   toggleBtn.addEventListener("click", () => {
+//     deleteMode = !deleteMode;
+//     if (deleteMode) {
+//       alertsBox.classList.add("delete-mode");
+//       clearAllBtn.style.display = "inline-block";
+//       toggleBtn.textContent = "Delete Selected";
+//       return;
+//     }
+//     const sel = document.querySelectorAll(".alert-checkbox:checked");
+//     if (sel.length === 0) {
+//       alertsBox.classList.remove("delete-mode");
+//       clearAllBtn.style.display = "none";
+//       toggleBtn.textContent = "Delete";
+//       return;
+//     }
+//     showPopup(`Delete ${sel.length} selected notifications?`, async () => {
+//       for (let cb of sel) {
+//         const id = cb.closest(".alert-item").dataset.id;
+//         await deleteDoc(doc(db, "notifications", id));
+//         cb.closest(".alert-item").remove();
+//       }
+//       deleteMode = false;
+//       alertsBox.classList.remove("delete-mode");
+//       clearAllBtn.style.display = "none";
+//       toggleBtn.textContent = "Delete";
+//     });
+//   });
+
+//   // Clear all visible
+//   clearAllBtn.addEventListener("click", () => {
+//     showPopup("Clear ALL notifications? This cannot be undone.", async () => {
+//       const boxes = document.querySelectorAll(".alert-checkbox");
+//       for (let cb of boxes) {
+//         const id = cb.closest(".alert-item").dataset.id;
+//         await deleteDoc(doc(db, "notifications", id));
+//         cb.closest(".alert-item").remove();
+//       }
+//       deleteMode = false;
+//       alertsBox.classList.remove("delete-mode");
+//       clearAllBtn.style.display = "none";
+//       toggleBtn.textContent = "Delete";
+//     });
+//   });
+
+//   // Auth & load
+//   onAuthStateChanged(auth, user => {
+//     if (!user) return window.location.href = 'index.html';
+//     loadNotifications(user.uid);
+//   });
+// });
 
 
 

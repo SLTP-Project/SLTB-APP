@@ -102,3 +102,20 @@
 #track-journey-btn:hover {
   background-color: #d96b17;
 }
+.paste-btn {
+  position: absolute;
+  right: 12%;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  margin-top: 2%;
+  padding: 0px;
+}
+.paste-btn:hover {
+  transform: scale(1.2);
+}
+.paste-btn:active {
+  transform: scale(1.0);
+}
