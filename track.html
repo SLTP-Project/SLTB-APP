@@ -60,5 +60,11 @@
   ></script>
   <script type="module" src="js/firebaseConfig.js"></script>
   <script type="module" src="js/track.js"></script>
+  <script type="module">
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+  import { app } from './js/firebaseConfig.js';
+  const dbRT = getDatabase(app);
+</script>
+
 </body>
 </html>
