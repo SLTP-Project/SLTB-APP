@@ -136,8 +136,10 @@ async function initMap() {
   // Toggle publishing of user's live location
   liveBtn.addEventListener("click", async () => {
     if (!isTrackingLive) {
-      beginPublishing();
-      liveBtn.textContent = "Stop Live Tracking";
+      const allowed = await requestLocationPermission();
+      if (allowed) {
+        liveBtn.textContent = "Stop Live Tracking";
+      }
     } else {
       stopPublishing();
       await updateDoc(bookingRef, { activeTracker: null });
@@ -148,14 +150,12 @@ async function initMap() {
   // Bus tracking: show/hide live bus marker
   busBtn.addEventListener("click", () => {
     if (busListener) {
-      // Stop tracking the bus
       busListener();
       busListener = null;
       busMarker?.setMap(null);
       busMarker = null;
       busBtn.textContent = "Track Bus";
     } else {
-      // Start tracking: always fetch & listen to the last GPS entry
       const historyRef = rtdbRef(dbRT, "/LocationHistory");
       const historyQuery = query(historyRef, limitToLast(1));
 
@@ -188,6 +188,28 @@ async function initMap() {
   });
 }
 
+// NEW: Check location permission & show guide if denied
+async function requestLocationPermission() {
+  try {
+    const permission = await navigator.permissions.query({ name: "geolocation" });
+    if (permission.state === "granted") {
+      beginPublishing();
+      return true;
+    } else if (permission.state === "prompt") {
+      beginPublishing(); // Will show prompt
+      return true;
+    } else if (permission.state === "denied") {
+      showLocationDeniedModal();
+      return false;
+    }
+  } catch (err) {
+    console.error("Permission check error:", err);
+    beginPublishing();
+    return true;
+  }
+}
+
+// Start publishing user location
 function beginPublishing() {
   isTrackingLive = true;
   let firstUpdate = true;
@@ -255,6 +277,290 @@ function subscribeToLive(trackerId) {
     }
   });
 }
+
+// NEW: Modal for denied permission
+function showLocationDeniedModal() {
+  const modal = document.createElement("div");
+  modal.innerHTML = `
+    <div style="
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;
+      z-index:9999;">
+      <div style="background:#fff;padding:20px;border-radius:12px;max-width:400px;text-align:center;">
+        <h3>Location Access Blocked</h3>
+        <p>You have denied location access. Please enable it in your browser settings:</p>
+        <ul style="text-align:left;">
+          <li>Click the lock icon near the URL bar.</li>
+          <li>Find "Location" and set it to "Allow".</li>
+          <li>Reload this page and try again.</li>
+        </ul>
+        <button id="closeModal" style="margin-top:10px;padding:8px 16px;background:#ff6b00;color:#fff;border:none;border-radius:8px;cursor:pointer;">
+          Close
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  document.getElementById("closeModal").addEventListener("click", () => modal.remove());
+}
+
+
+// // js/track.js
+
+// import { app, db, dbRT } from "./firebaseConfig.js";
+// import {
+//   doc, getDoc, setDoc, onSnapshot, serverTimestamp, updateDoc
+// } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+// import {
+//   ref as rtdbRef, query, limitToLast, onValue, off
+// } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+// let map;
+// let liveUserMarker = null;
+// let busMarker = null;
+// let busListener = null;
+// let busRouteRenderer = null;
+// let fromLoc, toLoc;
+// let watchId = null;
+// let isTrackingLive = false;
+
+// function getClientId() {
+//   let id = localStorage.getItem("clientId");
+//   if (!id) {
+//     id = crypto.randomUUID();
+//     localStorage.setItem("clientId", id);
+//   }
+//   return id;
+// }
+
+// const clientId = getClientId();
+// const urlParams = new URLSearchParams(window.location.search);
+// const vcode = urlParams.get("vcode");
+
+// window.onload = initMap;
+
+// async function initMap() {
+//   // Initialize the Google Map
+//   map = new google.maps.Map(document.getElementById("map"), {
+//     zoom: 12,
+//     center: { lat: 7.8731, lng: 80.7718 },
+//     fullscreenControl: false,
+//     streetViewControl: false,
+//   });
+
+//   if (!vcode) {
+//     alert("No V-Code provided.");
+//     return;
+//   }
+
+//   // Fetch booking info from Firestore
+//   const bookingRef = doc(db, "confirmedBookings", vcode);
+//   const snap = await getDoc(bookingRef);
+//   if (!snap.exists()) {
+//     alert("Booking not found.");
+//     return;
+//   }
+
+//   const { from, to, route, activeTracker } = snap.data();
+//   document.getElementById("header-info").textContent =
+//     `Bus #${route} • ${from} → ${to}`;
+
+//   // Geocode pickup and drop locations
+//   const geocoder = new google.maps.Geocoder();
+//   [fromLoc, toLoc] = await Promise.all(
+//     ["from", "to"].map(key => new Promise(res => {
+//       geocoder.geocode({ address: snap.data()[key] }, (results, status) => {
+//         res(status === "OK" ? results[0].geometry.location : null);
+//       });
+//     }))
+//   );
+//   if (!fromLoc || !toLoc) {
+//     alert("Couldn’t geocode stops.");
+//     return;
+//   }
+
+//   // Place pickup and drop markers
+//   new google.maps.Marker({
+//     map,
+//     position: fromLoc,
+//     icon: { url: "images/f.png", scaledSize: new google.maps.Size(32,32) },
+//     title: "Pickup"
+//   });
+//   new google.maps.Marker({
+//     map,
+//     position: toLoc,
+//     icon: { url: "images/t.png", scaledSize: new google.maps.Size(32,32) },
+//     title: "Drop"
+//   });
+
+//   // Fit route bounds
+//   const bounds = new google.maps.LatLngBounds();
+//   bounds.extend(fromLoc);
+//   bounds.extend(toLoc);
+//   map.fitBounds(bounds, 100);
+//   document.getElementById("info-bar").textContent = `${from} → ${to}`;
+
+//   // Draw the route line
+//   const directionsService = new google.maps.DirectionsService();
+//   busRouteRenderer = new google.maps.DirectionsRenderer({
+//     map,
+//     suppressMarkers: true,
+//     polylineOptions: { strokeColor: "#ff6b00", strokeWeight: 6 }
+//   });
+//   directionsService.route({
+//     origin: fromLoc,
+//     destination: toLoc,
+//     travelMode: google.maps.TravelMode.DRIVING
+//   }, (result, status) => {
+//     if (status === "OK") {
+//       busRouteRenderer.setDirections(result);
+//     }
+//   });
+
+//   // Set up buttons
+//   const startBtn = document.getElementById("btn-start-journey");
+//   const liveBtn  = document.getElementById("btn-track-live");
+//   const busBtn   = document.getElementById("btn-track-bus");
+
+//   // Handle exclusive tracker assignment
+//   if (!activeTracker) {
+//     startBtn.style.display = "block";
+//     liveBtn.style.display  = "none";
+//     startBtn.addEventListener("click", async () => {
+//       await setDoc(bookingRef, { activeTracker: clientId }, { merge: true });
+//       startBtn.style.display = "none";
+//       liveBtn.style.display  = "block";
+//     });
+//   } else if (activeTracker === clientId) {
+//     startBtn.style.display = "none";
+//     liveBtn.style.display  = "block";
+//   } else {
+//     startBtn.style.display = "none";
+//     liveBtn.style.display  = "none";
+//     subscribeToLive(activeTracker);
+//   }
+
+//   // Toggle publishing of user's live location
+//   liveBtn.addEventListener("click", async () => {
+//     if (!isTrackingLive) {
+//       beginPublishing();
+//       liveBtn.textContent = "Stop Live Tracking";
+//     } else {
+//       stopPublishing();
+//       await updateDoc(bookingRef, { activeTracker: null });
+//       liveBtn.textContent = "Track My Live Location";
+//     }
+//   });
+
+//   // Bus tracking: show/hide live bus marker
+//   busBtn.addEventListener("click", () => {
+//     if (busListener) {
+//       // Stop tracking the bus
+//       busListener();
+//       busListener = null;
+//       busMarker?.setMap(null);
+//       busMarker = null;
+//       busBtn.textContent = "Track Bus";
+//     } else {
+//       // Start tracking: always fetch & listen to the last GPS entry
+//       const historyRef = rtdbRef(dbRT, "/LocationHistory");
+//       const historyQuery = query(historyRef, limitToLast(1));
+
+//       busListener = onValue(historyQuery, snapshot => {
+//         const obj = snapshot.val();
+//         if (!obj) return;
+//         const key = Object.keys(obj)[0];
+//         const { Latitude: lat, Longitude: lng } = obj[key];
+//         if (lat == null || lng == null) return;
+
+//         const pos = new google.maps.LatLng(lat, lng);
+//         if (!busMarker) {
+//           busMarker = new google.maps.Marker({
+//             map,
+//             position: pos,
+//             icon: { url: "images/bus.png", scaledSize: new google.maps.Size(42,42) },
+//             title: "Live Bus Location"
+//           });
+//           map.setZoom(15);
+//         } else {
+//           busMarker.setPosition(pos);
+//         }
+//         map.panTo(pos);
+//       }, error => {
+//         console.error("Realtime DB error:", error);
+//       });
+
+//       busBtn.textContent = "Stop Tracking Bus";
+//     }
+//   });
+// }
+
+// function beginPublishing() {
+//   isTrackingLive = true;
+//   let firstUpdate = true;
+//   watchId = navigator.geolocation.watchPosition(pos => {
+//     const { latitude: lat, longitude: lng } = pos.coords;
+//     const liveRef = doc(db, "confirmedBookings", vcode, "liveLocations", clientId);
+//     setDoc(liveRef, { lat, lng, ts: serverTimestamp() });
+//     const latlng = new google.maps.LatLng(lat, lng);
+//     if (!liveUserMarker) {
+//       liveUserMarker = new google.maps.Marker({
+//         map,
+//         position: latlng,
+//         icon: {
+//           path: google.maps.SymbolPath.CIRCLE,
+//           scale: 10,
+//           fillColor: "#d50000",
+//           fillOpacity: 1,
+//           strokeColor: "#fff",
+//           strokeWeight: 2
+//         },
+//         title: "My Live Location"
+//       });
+//     } else {
+//       liveUserMarker.setPosition(latlng);
+//     }
+//     if (firstUpdate) {
+//       map.panTo(latlng);
+//       firstUpdate = false;
+//     }
+//   }, err => console.warn(err), { enableHighAccuracy: true, maximumAge: 0, timeout: 7000 });
+// }
+
+// function stopPublishing() {
+//   if (watchId !== null) {
+//     navigator.geolocation.clearWatch(watchId);
+//     watchId = null;
+//   }
+//   liveUserMarker?.setMap(null);
+//   liveUserMarker = null;
+//   isTrackingLive = false;
+// }
+
+// function subscribeToLive(trackerId) {
+//   const liveRef = doc(db, "confirmedBookings", vcode, "liveLocations", trackerId);
+//   onSnapshot(liveRef, snap => {
+//     if (!snap.exists()) return;
+//     const { lat, lng } = snap.data();
+//     const pos = new google.maps.LatLng(lat, lng);
+//     if (!liveUserMarker) {
+//       liveUserMarker = new google.maps.Marker({
+//         map,
+//         position: pos,
+//         title: "Tracking Child",
+//         icon: {
+//           path: google.maps.SymbolPath.CIRCLE,
+//           scale: 10,
+//           fillColor: "#d50000",
+//           fillOpacity: 1,
+//           strokeColor: "#fff",
+//           strokeWeight: 2
+//         }
+//       });
+//     } else {
+//       liveUserMarker.setPosition(pos);
+//     }
+//   });
+// }
 
 
 
